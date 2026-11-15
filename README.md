@@ -14,9 +14,9 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 ## Funktioner
 
 **Uppdrag och ritningar**
-- Två typer av uppdrag: **Inventering/platsbesök** (med prioritering) och **Utförandekontroll** (objekttyper med kontrollpunkter enligt BFS 2024:7). Båda kan påbörjas utan ritning och få en ritning senare.
-- Ritningar som PDF eller bild. En PDF med flera sidor kan läggas in som ett plan per sida.
-- Flera plan i samma uppdrag, med flikar som visar antalet objekt på varje plan.
+- Två typer av uppdrag: **Inventering/platsbesök** (med prioritering) och **Utförandekontroll** (objekttyper med kontrollpunkter enligt BFS 2024:7). Båda kan påbörjas utan underlag och få ett underlag senare.
+- Ritningar med en PDF eller en bild som underlag. En PDF med flera sidor kan läggas in som en ritning per sida.
+- Flera ritningar i samma uppdrag, med flikar som visar antalet objekt på varje ritning.
 - Sortering av uppdragen efter senast använda, datum, namn eller typ.
 
 **Objekt**
@@ -34,7 +34,7 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 
 **Objektlistan**
 - Visas bredvid ritningen. Öppnas med listknappen i marginalen eller med ett svep in från högerkanten.
-- Sök på nummer eller text och filtrera på grupp och kategori, på ett plan eller alla.
+- Sök på nummer eller text och filtrera på grupp och kategori, på en ritning eller alla.
 - Välj flera objekt för att byta grupp, kategori eller prioritet, eller radera dem samtidigt.
 
 **Ritverktyg**
@@ -45,11 +45,11 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 
 **Symbolverktyget (ISO)**
 - ISO 7010-skyltar på ritningen: handbrandsläckare, inomhusbrandpost, brandlarmsknapp, utrymningsplats, återsamlingsplats, utrymningsfönster, utrymningsfönster med stege, räddningsfönster, utrymningsstege, utrymningshiss och vägledande markeringar uppåt, neråt, åt vänster och åt höger, även tillgänglighetsanpassad väg för utrymning, både vita och efterlysande (gula). Skyltarna ligger sorterade efter färg, med de vägledande markeringarna i följd.
-- Symbolerna är 7,5 mm (markeringarna 7,5 × 3,75 mm) på ritningens papper, gånger symbolstorleken som följer pappersformatet (A1 ×2) eller väljs per plan. Pappersformatet läses från PDF:en eller väljs när ritningen läggs in.
+- Symbolerna är 7,5 mm (markeringarna 7,5 × 3,75 mm) på ritningens papper, gånger symbolstorleken som följer pappersformatet (A1 ×2) eller väljs per ritning. Pappersformatet läses från PDF:en eller väljs när ritningen läggs in.
 - **Anteckning med hänvisningspil:** en gul ruta med text i 10 pt och en blå pil till platsen den gäller.
 
 **Export**
-- **PDF:** ett avsnitt per grupp med översiktsritning per plan och en tabell med nummer, beskrivning, lägesbild och foton. Översiktsritningarna är ritningens egen sida i full storlek (en A1 förblir A1) med objekten och symbolerna utsatta; på dem har numren kategoriernas färger. Symbolerna får en egen översiktsritning, och du väljer vilka gruppers ritningar som också ska visa dem. På varje översiktsritning ligger en ruta i ritningshuvudets stil – översiktens namn, uppdragets uppgifter och en symbolförteckning – där ritningen har plats, oftast i marginalen ovanför ritningshuvudet.
+- **PDF:** ett avsnitt per grupp med en översiktsritning för varje ritning och en tabell med nummer, beskrivning, lägesbild och foton. Översiktsritningarna är ritningens egen sida i full storlek (en A1 förblir A1) med objekten och symbolerna utsatta; på dem har numren kategoriernas färger. Symbolerna får en egen översiktsritning, och du väljer vilka gruppers ritningar som också ska visa dem. På varje översiktsritning ligger en ruta i ritningshuvudets stil – översiktens namn, uppdragets uppgifter och en symbolförteckning – där ritningen har plats, oftast i marginalen ovanför ritningshuvudet.
 - **Redigerbart i Bluebeam:** på symbolritningen ligger symbolerna och anteckningarna som markeringar, så de kan flyttas, ändras i storlek, vridas och få ny text i Bluebeam och Acrobat.
 - **Word:** samma tabell som redigerbar fil, med översiktsritningarna som separat PDF.
 - **Logga:** ladda upp din logga (JPEG, PNG eller SVG) under Inställningar och välj om den ska stå till vänster, i mitten eller till höger. Med Exportera med logga hamnar den i sidhuvudet på tabellsidorna i PDF och Word.
@@ -59,22 +59,25 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 - Innan du exporterar visas det som saknas, till exempel objekt utan foto eller beskrivning. Du kan fylla i det eller exportera direkt.
 
 **Samarbeta – två i samma uppdrag, utan server**
-- Under Uppdragsinställningar → Samarbeta bjuder du in en medhjälpare. Du som bjuder in är ägare och bestämmer numreringen. Medhjälparen får hela uppdraget som en fil och läser in den med en kod som skannas från din skärm (QR) eller skrivs in.
-- Sedan skickar ni ändringar till varandra som filer, åt båda hållen, med Quick Share, Bluetooth, mejl eller vad telefonen har i sin dela-meny. En fil innehåller bara det som ändrats sedan förra, med foton. Ett objekt som inte skickats än är märkt "Ej synkad", och knappen Skicka i planvyn räknar dem.
-- När ägaren läser in medhjälparens objekt numreras de efter ägarens, i den ordning de gjordes, och ägarens nästa fil ger medhjälparen de slutliga numren. Har båda ändrat samma objekt gäller ägarens version. Raderingar följer med.
+- Under Uppdragsinställningar → Samarbeta bjuder du in en medhjälpare. Du som bjuder in är ägare och bestämmer numreringen. Medhjälparen får hela uppdraget som en fil och läser in den med en kod. Koden skannas från din skärm – appen visar kameran som en sökare och läser QR-koden så fort den syns – eller skrivs in.
+- **I Android-appen** öppnas filen direkt: tryck på den i filhanteraren, eller välj Dela → PlanPin, så läses den in. Telefonens egen kamera kan också läsa QR-koden och öppna PlanPin med koden ifylld. Fil och kod kan komma i vilken ordning som helst.
+- Filerna går åt ett håll i taget: ägaren skickar hela uppdraget (ritningarna med sina underlag, inställningarna och alla objekt med de slutliga numren), medhjälparen skickar sina ändringar – med Quick Share, Bluetooth, mejl eller vad telefonen har i sin dela-meny. Medhjälparens fil innehåller bara det som ändrats sedan förra, med foton. Ett objekt som inte skickats än är märkt "Ej synkad" och ritas fyrkantigt på ritningen; knappen Skicka i ritningsvyn räknar dem.
+- När ägaren läser in medhjälparens nya objekt numreras de efter ägarens, i den ordning de gjordes, och ägarens nästa fil ger medhjälparen de slutliga numren. Det medhjälparen lagt till eller ändrat men inte hunnit skicka ligger kvar när ägarens fil läses in.
+- Ändrar medhjälparen ett av ägarens objekt blir det ett förslag hos ägaren: en streckad ring på ritningen, ett besked när filen läses in, och en granskning som visar vad som skiljer med Godkänn och Avvisa. Medhjälparen kan inte ta bort ägarens objekt eller ritningar; sina egna objekt tar medhjälparen bort som vanligt, och raderingen följer med.
 - Filerna är krypterade med koden (AES-256) och avslöjar ingenting för den som får tag i dem utan koden. Ingenting går via nätet – appen skickar bara filen till dela-menyn.
 
 **Säkerhet och integritet**
-- Allt sparas bara på telefonen. Ingenting laddas upp och ingenting skickas någonstans. En mätare under Inställningar visar hur mycket lagring varje uppdrag tar, och appen säger tydligt ifrån om lagringen blir full.
+- Allt sparas bara på telefonen. Ingenting laddas upp och ingenting skickas någonstans. En mätare under Inställningar visar hur fullt det är – i Android-appen mätt mot telefonens lediga utrymme – och hur mycket lagring varje uppdrag tar, och appen säger tydligt ifrån om lagringen blir full.
 - Fotons EXIF-data (position, telefonmodell) tas bort när de läses in, så de följer aldrig med i protokollen. Bilder över 260 megapixel nekas innan de läses in.
 - Med PIN-kod eller lösenord på hålls flera öppna flikar i samma webbläsare i takt: låses en, låses alla.
 - Lås med PIN-kod eller lösenord. Allt som sparas krypteras då (AES-256), och appen låses efter 30 minuter utan aktivitet.
 - Säkerhetskopior är vanliga zip-filer (uppgifterna som JSON, ritningar och foton som filer) som kan läsas in på en annan telefon – och öppnas utan appen om det skulle behövas. De kan krypteras med ett lösenord du väljer. Snabbtexterna och kontrollantens namn följer med i kopian, och ett delat uppdrag fortsätter att vara delat efter inläsningen.
 - Android-appen saknar helt behörighet att använda internet.
+- Säkerhetskopior och delade uppdrag kan öppnas med Android-appen direkt från filhanteraren. Android känner inte till filsorten, så PlanPin erbjuds för zip-filer och filer av okänd sort; det som inte är en fil från PlanPin avvisas utan att läsas in, och en okrypterad säkerhetskopia läses in först när du har svarat ja.
 
 **Övrigt**
 - I en klunga av objekt behåller ungefär varannan markör sitt nummer och resten visas som små prickar i gruppens färg, så att ritningen syns även med många objekt. Prickarna följer med när du zoomar och får tillbaka numret när det finns plats (kan stängas av).
-- Ljust och mörkt läge, och sex färgteman att välja mellan under Inställningar → Utseende → Färgtema (ritningen och protokollet påverkas inte). Knappar och symboler anpassar sig efter skärmens storlek. Ritverktygen, objektlistan och inställningarna för uppdraget och planet sitter som runda knappar nertill där tummen når dem, till vänster eller höger efter vilken hand du håller telefonen i (Inställningar → Ritverktygen). Animeringar och tips kan stängas av.
+- Ljust och mörkt läge, och sex accentfärger att välja mellan under Inställningar → Utseende → Accentfärg (ritningen och protokollet påverkas inte). Knappar och symboler anpassar sig efter skärmens storlek. Ritverktygen och objektlistan sitter som runda knappar nertill där tummen når dem, till vänster eller höger efter vilken hand du håller telefonen i (Inställningar → Layout och visning → Föredragen marginal), och inställningarna för uppdraget och ritningen står i namnraden. Animeringar och tips kan stängas av.
 - Fungerar utan uppkoppling när den väl är öppnad. Vid en uppdatering följer uppdragen med, och säkerhetskopior från de två senaste versionerna går alltid att läsa in.
 
 Vad som är nytt i varje version står i [NYHETER.md](NYHETER.md).

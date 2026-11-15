@@ -170,6 +170,7 @@ label:focus-within {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-align: center; /* a label or a link that looks like a button: its words centred also on two rows */
 }
 .btn.primary {
   background: var(--tag);
@@ -187,6 +188,64 @@ label:focus-within {
 .btn[disabled] {
   opacity: 0.5;
   cursor: default;
+}
+/* Everything that can be pressed answers the finger the same way (V1.6.39): it sinks a little while it is held, as the
+   assignment cards and the drawing tools already did. The browser's own grey flash over the button is turned off – the
+   two together looked like two different apps. Wide things (rows, whole-width buttons) sink less than small ones. */
+button,
+label[role="button"],
+a,
+summary,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+.btn,
+.iconbtn,
+.sbtn,
+.pbtn,
+.cat,
+.seg,
+.floor,
+.pickbtn,
+.sideclose,
+.mrow,
+.choice,
+.ocard,
+.linkbtn {
+  transition:
+    transform 0.1s ease-out,
+    opacity 0.1s ease-out,
+    background-color 0.1s ease-out;
+}
+.iconbtn:active,
+.sbtn:active,
+.pbtn:active,
+.cat:active,
+.seg:active,
+.floor:active,
+.pickbtn:active,
+.sideclose:active {
+  transform: scale(0.95);
+}
+.btn:active,
+.choice:active {
+  transform: scale(0.985);
+  opacity: 0.85;
+}
+/* rows of a list are not moved (their frame is the list's): they darken */
+.mrow:active,
+.ocard:active {
+  background: var(--plan-bg);
+}
+.linkbtn:active {
+  opacity: 0.6;
+}
+.btn[disabled]:active,
+.sbtn[disabled]:active,
+.seg.on:active {
+  transform: none;
 }
 .scroll {
   flex: 1;
@@ -292,8 +351,18 @@ label:focus-within {
 .themeseg {
   width: 100%;
 }
+/* the choices share the row equally – but none is narrower than its words (Auto (×2) beside ×1): that one takes the
+   room it needs and the others share the rest, and with big text a choice goes to a second row */
 .themeseg .seg {
-  flex: 1;
+  flex: 1 1 44px;
+  min-width: max-content;
+  padding-inline: 6px; /* the row is shared: less air at the sides, so five choices stay on one row longer */
+}
+/* Skala: the scale and the paper side by side when both fit whole, otherwise one above the other ("Välj
+   pappersformat" is never cut) */
+.field .row.scalerow select {
+  flex: 1 1 190px;
+  min-width: 0;
 }
 .calib {
   position: absolute;
@@ -304,20 +373,59 @@ label:focus-within {
   z-index: 4;
 }
 .pickbtn {
-  grid-row: 1/3;
-  grid-column: 2;
+  flex: none;
+  white-space: nowrap;
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: 999px;
-  padding: 5px 12px;
+  padding: 5px 10px;
+  min-width: 44px;
   min-height: 44px;
   font-weight: 600;
   font-size: var(--fs-s);
 }
-.pickbtn.on {
-  background: var(--tag);
-  color: var(--tag-ink);
+/* Ritningsinställningar → Underlag: the file the drawing came from */
+.fileline {
+  margin: 0;
+  line-height: var(--lh);
+  overflow-wrap: anywhere;
+}
+/* Ritningsinställningar → Underlag → Ritningsordning: the floors in order, each with up and down */
+.ordrow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.ordrow + .ordrow {
+  margin-top: 6px;
+}
+.ordrow.on {
   border-color: var(--tag);
+  box-shadow: 0 0 0 1px var(--tag) inset;
+}
+.ordrow .ordn {
+  font-family: var(--font-num);
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 18px;
+  text-align: center;
+}
+.ordrow .ordname {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.ordrow .sbtn {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: var(--fs-l);
+}
+.ordrow .sbtn:disabled {
+  opacity: 0.35;
 }
 .sitem.picking,
 .ocard.picking {
@@ -369,20 +477,28 @@ label:focus-within {
   z-index: 3;
   background: var(--surface);
   border-top: 1px solid var(--line);
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* as wide as the list, never as wide as its widest row (V1.6.38) */
   gap: 8px;
   box-shadow: 0 -6px 14px rgba(0, 0, 0, 0.08);
 }
 .pickbar .prow1 {
   display: flex;
+  flex-wrap: wrap; /* big text: Alla and Klar go under the count, together */
   align-items: center;
-  gap: 12px;
+  gap: 0 10px;
 }
 .pickbar .pcnt {
-  flex: 1;
+  flex: 1 1 auto;
   font-size: var(--fs-b);
   white-space: nowrap;
+}
+.pickbar .pacts {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
 }
 .pickbar .prow2 {
   display: flex;
@@ -405,6 +521,7 @@ label:focus-within {
 }
 .orow .addobj {
   flex: 1;
+  margin-bottom: 0; /* in the row the margin made Välj beside it taller (granskningen #10) */
 }
 @media (max-width: 420px) {
   .brand h1 {
@@ -482,6 +599,50 @@ label:focus-within {
   flex: 1 1 150px;
   padding: 10px 14px;
   font-size: var(--fs-b);
+}
+/* Säkerhet och lagring: its three parts (Lagring, Säkerhetskopia, Säkerhet), each under a heading and a line */
+.secpart {
+  display: grid;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 8px;
+}
+.sechead {
+  margin: 0;
+  font-size: var(--fs-l);
+  font-weight: 700;
+  color: var(--ink);
+}
+.secpart .bkbtns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.secpart .bkbtns > *,
+.secpart .bkbtns .btn {
+  flex: 1 1 170px; /* side by side when both fit whole, otherwise one above the other… */
+  min-width: fit-content; /* …and never a word broken: "Läs in säkerhetskopia" is longer than the 170 px (V1.6.39) */
+}
+/* the web app's backup reminder (49-autokopia): the assignments it is about */
+.remindlist {
+  margin: 0;
+  padding-left: 20px;
+  line-height: var(--lh);
+  overflow-wrap: anywhere;
+}
+.autolist {
+  display: grid;
+  gap: 8px;
+}
+.autorow {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.autorow b,
+.autorow small {
+  overflow-wrap: anywhere;
 }
 .status {
   display: grid;
@@ -677,9 +838,11 @@ label:focus-within {
   color: var(--muted);
   font-size: var(--fs-s);
   line-height: var(--lh);
-}
-.pbody small {
   overflow-wrap: anywhere; /* big text on a narrow phone: the number and date wrap instead of running out of the card */
+}
+.pbody small span {
+  display: inline-block; /* kept whole on its row: the line breaks between the parts, not inside "3 ritningar" (V1.6.39) */
+  max-width: 100%;
 }
 .kchip {
   font-size: var(--fs-xs);
@@ -870,6 +1033,19 @@ label:focus-within {
   outline: 2px dashed var(--ink);
   outline-offset: 2px;
 }
+/* Samarbeta: an object the other side has not got yet (not in any sent file, or changed since) is square with soft
+   corners, in its group's colour as usual; round again once a file with it has been sent. The small dots follow. */
+.mk.unsynced i {
+  border-radius: 7px;
+}
+.mk.unsynced.sel::after {
+  border-radius: 14px;
+}
+/* Samarbeta, the owner: an object with a proposed change waiting (collReviewSheet) has a dashed ring in its colour */
+.mk.proposed i {
+  outline: 2px dashed var(--mc, var(--brand));
+  outline-offset: 3px;
+}
 /* a checkpoint (Checklista) not yet an object: a white square tag with a dashed teal edge and a check mark; ticked: teal */
 .mk.chk i {
   background: #fff;
@@ -931,6 +1107,8 @@ label:focus-within {
   margin-left: auto; /* to the right, also when on a row of their own */
 }
 .chkbtns .sbtn {
+  flex: none; /* each as wide as its own word: shared equally, "Ta bort" was squeezed against its frame beside "Flytta" */
+  padding-inline: 8px;
   white-space: nowrap;
 }
 .chkadd {
@@ -995,7 +1173,9 @@ label:focus-within {
 }
 
 /* Sheets */
-.scrim {
+/* .scrimout/.sheetout: a closed sheet on its way down (takeSheet) – it looks the same but is no sheet any more */
+.scrim,
+.scrimout {
   position: fixed;
   inset: 0;
   background: rgba(10, 14, 12, 0.45);
@@ -1004,11 +1184,19 @@ label:focus-within {
   align-items: flex-end;
   justify-content: center;
 }
-.sheet {
+.scrimout {
+  pointer-events: none;
+}
+.sheet,
+.sheetout {
   background: var(--surface);
   width: 100%;
   max-width: 560px;
   max-height: 92%;
+  /* --keep: the height of the sheet whose place this one took (standIn), so that it stands still; what is in it
+     starts at the top */
+  min-height: min(var(--keep, 0px), 92%);
+  align-content: start;
   overflow-y: auto;
   border-radius: 16px 16px 0 0;
   padding-block: 14px calc(16px + env(safe-area-inset-bottom, 0px));
@@ -1020,7 +1208,15 @@ label:focus-within {
   will-change: transform;
   overflow-wrap: anywhere; /* big text: a long heading or word wraps instead of running out of the sheet */
 }
-.sheet .grab {
+/* With buttons that stay at its bottom edge (.savebar) the room under them is a border instead of padding: what
+   scrolls in the sheet then ends at the buttons, and nothing passes in a strip under them */
+.sheet.hasbar,
+.sheetout.hasbar {
+  padding-bottom: 0;
+  border-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) solid var(--surface);
+}
+.sheet .grab,
+.sheetout .grab {
   width: 44px;
   height: 5px;
   border-radius: 3px;
@@ -1156,13 +1352,17 @@ textarea {
 
 /* List */
 
+/* the row of tabs: the bar has the background and the line, the row in it scrolls sideways and fades at an edge
+   where there is more (floorTabs) */
+.floorsbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
 .floors {
   display: flex;
   gap: 6px;
   overflow-x: auto;
   padding-block: 8px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   scrollbar-width: none;
@@ -1271,12 +1471,17 @@ textarea {
   color: var(--muted);
   text-align: right;
 }
+/* The list's width, said once: just under half the drawing's area, at most 250 px – and never under 184 px, which is
+   what its heading (Objekt, Välj, ✕) and the Välj bar need on a narrow phone (V1.6.38: at 345 px they were cut off) */
+.vp {
+  --sidew: max(184px, min(48%, 250px));
+}
 .side {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(48%, 250px);
+  width: var(--sidew);
   background: var(--surface);
   border-left: 1px solid var(--line);
   box-shadow: -6px 0 18px rgba(0, 0, 0, 0.14);
@@ -1289,37 +1494,53 @@ textarea {
 .side {
   will-change: transform;
 }
+/* Objekt and the plan's name to the left, Välj and ✕ to the right. With big text or a long plan name the two do not
+   fit beside each other: then the buttons take a row of their own (V1.6.38) – nothing is cut off by the list's edge */
 .sidehead {
   position: sticky;
   top: 0;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0 8px;
+  gap: 6px;
   padding: 10px 12px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
+.sidetitle {
+  flex: 1 1 0; /* counts as its longest word when the row is filled: the plan's name wraps inside it before the buttons leave the row */
+  max-width: 100%; /* a name of one very long word: a row of its own, and there the word breaks */
+}
+.sidehead b,
+.sidehead span {
+  display: block;
+}
 .sidehead b {
   font-size: var(--fs-b);
 }
+/* the ritning's name as it is written (V1.6.41): in capitals with spaced letters "RITNING 1" no longer fitted beside
+   Välj and ✕ on a phone and broke into two lines, which "PLAN 1" never did */
 .sidehead span {
-  grid-row: 2;
   font-size: var(--fs-xs);
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  overflow-wrap: break-word;
+}
+.sidebtns {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto; /* to the right, also on a row of their own */
 }
 .sideclose {
-  grid-row: 1/3;
-  grid-column: 3;
+  flex: none;
   width: 44px;
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--surface);
-  color: var(--danger);
+  color: var(--ink); /* it closes the list and deletes nothing: not red (V1.6.39) */
   font-weight: 700;
 }
 .side .spacer {
@@ -1364,8 +1585,19 @@ textarea {
   font-weight: 700;
   color: var(--ink);
 }
+/* Denna / Alla (before V1.6.41: Detta plan / Alla plan): one row across the narrow list, half each (granskningen #19) */
 .sidescope {
-  margin: 0 12px 6px;
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 8px 12px;
+}
+.sidescope .seg {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 6px 4px;
+  font-size: var(--fs-s);
+  white-space: normal; /* a long choice on two lines in its half rather than out of it (V1.6.38) */
+  line-height: 1.15;
 }
 .sitem .stop b {
   font-family: var(--font-num);
@@ -1432,8 +1664,23 @@ textarea {
   color: var(--danger);
 }
 .vp.with-side .hint {
-  left: calc((100% - min(48%, 250px)) / 2);
-  max-width: calc(100% - min(48%, 250px) - 24px);
+  left: calc((100% - var(--sidew)) / 2);
+  max-width: calc(100% - var(--sidew) - 24px);
+}
+.vp.with-side.side-left .hint {
+  left: calc(var(--sidew) + (100% - var(--sidew)) / 2);
+}
+/* the list on the tools' side (the default, Föredragen marginal: vänster): the left edge */
+.vp.side-left .side {
+  right: auto;
+  left: 0;
+  border-left: 0;
+  border-right: 1px solid var(--line);
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.14);
+}
+/* with the list open the margin's round buttons are hidden – the list has its own close (granskningen #40) */
+.vp.with-side .ltools {
+  display: none;
 }
 .stage.anim {
   transition: transform 0.35s ease;
@@ -1466,9 +1713,30 @@ textarea {
   gap: 8px;
   padding: 8px 0 4px;
 }
+/* big text on a small phone (fitSide in 17): what stays in place lets go, one part at a time, so that some of the list
+   is always in sight */
+.side.tight1 .fbar,
+.side.tight2 .sidehead,
+.side.tight3 .pickbar {
+  position: static;
+}
+/* a row that scrolls sideways fades out at the edge where there is more (edgeFade in 07) */
+.fade-r {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
+.fade-l {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 28px), transparent);
+}
+.fade-l.fade-r {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+}
+/* the search row: right under the heading, whose height is measured (one row, or two with big text) */
 .side .fbar {
   position: sticky;
-  top: 57px;
+  top: calc(var(--headh, 65px) - 8px);
   z-index: 2;
   background: var(--surface);
   padding: 8px 10px;
@@ -1578,13 +1846,30 @@ textarea {
   padding: 8px 14px;
   color: var(--ink);
 }
+/* Avbryt and Klar stay together on one row, never split by the wrap */
+.movebar .mbtns {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+.movebar .areahint {
+  font-style: normal;
+}
+.movebar .sbtn:disabled {
+  opacity: 0.45;
+}
 .movebar .sbtn.ok {
   background: var(--tag);
   color: var(--tag-ink);
   border-color: var(--tag);
 }
 .vp.with-side .movebar {
-  right: calc(min(48%, 250px) + 10px);
+  right: calc(var(--sidew) + 10px);
+}
+.vp.with-side.side-left .movebar {
+  right: 10px;
+  left: calc(var(--sidew) + 10px);
 }
 .stage.moveon .mk:not(.moving) i {
   opacity: 0.35;
@@ -1642,15 +1927,6 @@ textarea {
   color: #fff;
   font-weight: 700;
   font-size: var(--fs-s);
-}
-.pempty {
-  grid-column: 1/-1;
-  border-radius: var(--r);
-  background: var(--plan-bg);
-  color: var(--muted);
-  font-size: var(--fs-m);
-  padding: 22px;
-  text-align: center;
 }
 .cats {
   display: flex;
@@ -1967,6 +2243,7 @@ img.tload,
   }
   .toast {
     animation: toastin 0.22s ease-out;
+    transition: bottom 0.18s ease-in; /* it follows the sheet under it down when the sheet closes */
   }
   @keyframes toastin {
     from {
@@ -2015,6 +2292,9 @@ img.tload,
   border-radius: 999px;
   font-size: var(--fs-m);
   z-index: 40;
+  /* as wide as its text, up to the screen's width (placed at left 50 % it would otherwise get half the screen and
+     break into lines early) */
+  width: max-content;
   max-width: calc(100% - 32px);
   text-align: center;
   pointer-events: none;
@@ -2282,8 +2562,10 @@ img.tload,
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.ocard img,
-.ocard .ph {
+.ocard.nophoto {
+  grid-template-columns: auto minmax(0, 1fr); /* no photo: no empty frame, the text takes the row (V1.6.39) */
+}
+.ocard img {
   width: 72px;
   height: 54px;
   object-fit: cover;
@@ -2405,6 +2687,7 @@ input.pinin.pwin {
 }
 .shield .app,
 .shield .scrim,
+.shield .scrimout,
 .shield .toast,
 .shield .busy {
   visibility: hidden;
@@ -2632,6 +2915,17 @@ input.pinin.pwin {
   z-index: 9;
   background: #fff;
 }
+/* it fades in briefly when it comes (not with Animerade övergångar off, or less motion on the phone) */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.noanim) .loupe {
+    animation: loupein 0.12s ease-out;
+  }
+}
+@keyframes loupein {
+  from {
+    opacity: 0;
+  }
+}
 /* Drawing edits */
 .stage svg.edits {
   position: absolute;
@@ -2668,7 +2962,7 @@ input.pinin.pwin {
   left: max(8px, env(safe-area-inset-left, 0px));
   bottom: calc(var(--lcell) + 32px); /* clear of the one button at the bottom (the tool that is out) */
   display: flex;
-  flex-direction: column-reverse; /* the tools at the bottom, the box of choices above them */
+  flex-direction: column-reverse; /* from the bottom: Ångra and Gör om, the tools, the box of choices above them */
   align-items: flex-start;
   gap: 8px;
   pointer-events: none;
@@ -2683,6 +2977,20 @@ input.pinin.pwin {
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+/* ISO: the line between Senast använda and the whole list */
+.symcol .symsep {
+  align-self: stretch;
+  margin: 2px 6px;
+  border: 0;
+  border-top: 2px solid var(--line);
+}
+/* ISO: Gör om above Ångra, so the box is one column wide like in the other tools; it stands beside the column of signs
+   (fitSymPage) */
+.eopts .undorow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .eopts:empty {
   display: none;
@@ -2717,8 +3025,65 @@ input.pinin.pwin {
 .eopt.danger {
   color: var(--danger);
 }
-.eopt.end {
-  color: var(--danger);
+/* a short screen: the box of choices beside the tools instead of above them */
+.ecol .eopts.aside {
+  position: absolute;
+  left: calc(100% + 8px);
+}
+:root[data-hand="right"] .ecol .eopts.aside {
+  left: auto;
+  right: calc(100% + 8px);
+}
+/* with the tools at the right edge the box's first column is the one over them: further columns go to the left */
+:root[data-hand="right"] .editbar:not(.sym) .ecol .eopts {
+  direction: rtl;
+}
+:root[data-hand="right"] .editbar:not(.sym) .ecol .eopts > * {
+  direction: ltr;
+}
+/* Brandcellsgräns in the column of signs: its class over the line */
+.fireico .fireicotxt {
+  font: 700 30px var(--font-num, sans-serif);
+  fill: currentColor;
+}
+/* Brandcellsgräns: Klass and Tid, a cell each in the column's width; a tap opens a column of the choices beside the
+   tools (.firepop), in the same style */
+.eopt.firepick {
+  width: var(--ecell, 44px);
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+.firepickface {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  line-height: 1;
+  pointer-events: none;
+}
+.firepickface b {
+  font-family: var(--font-num);
+  font-size: calc(var(--ecell, 44px) * 0.3);
+}
+.firepickline {
+  width: calc(var(--ecell, 44px) * 0.7);
+  height: calc(var(--ecell, 44px) * 0.14);
+}
+.firepop {
+  position: fixed;
+  z-index: 41;
+  grid-auto-rows: max-content;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.firepopcatch {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+/* Klar: done drawing or placing, nothing is thrown away */
+.eopt.done {
+  color: var(--ok);
 }
 .ico {
   width: 30px;
@@ -2735,15 +3100,21 @@ input.pinin.pwin {
   height: calc(var(--ecell, 44px) * 0.6);
 }
 /* a value rather than a symbol: the scale, and what was measured */
+/* the scale keeps to the column's width: a long one (1:2500, 1:10000) in smaller type */
 .eopt.escale {
-  width: auto;
-  min-width: var(--ecell, 44px);
-  padding: 0 4px;
+  width: var(--ecell, 44px);
+  padding: 0 1px;
+  overflow: hidden;
+  white-space: nowrap;
   font-size: calc(var(--ecell, 44px) * 0.28);
   font-weight: 700;
   font-family: var(--font-num);
   font-variant-numeric: tabular-nums;
   border-color: var(--line);
+}
+.eopt.escale.long {
+  font-size: calc(var(--ecell, 44px) * 0.21);
+  letter-spacing: -0.02em;
 }
 /* what was measured: its own label beside the top of the box, so the box never changes size */
 .editbar .mres {
@@ -2822,8 +3193,8 @@ input.pinin.pwin {
   vector-effect: non-scaling-stroke;
   filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35));
 }
-/* bottom left of the drawing (or right, by the setting): the settings, the object list, and ISO, Mät and the pen
-   that open the drawing tools; a little more room between the two groups */
+/* bottom left of the drawing (or right, by the setting): the object list, and ISO, Mät and the pen that open the
+   drawing tools; a little more room between the list and the three */
 .ltools {
   position: absolute;
   left: max(12px, env(safe-area-inset-left, 0px));
@@ -2843,9 +3214,9 @@ input.pinin.pwin {
 .vp.panning .ecol {
   opacity: 0.2;
 }
-/* a short drawing area: two columns of three (see fitMargin) */
+/* a short drawing area: two columns of two (see fitMargin) */
 .ltools.two {
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: repeat(2, auto);
   grid-auto-flow: column;
 }
 .ltools.two .sidebtn + .editbtn:not(.sidebtn) {
@@ -2864,7 +3235,7 @@ input.pinin.pwin {
     margin-left: 8px;
   }
 }
-/* on a floor without a drawing the two settings stand in the top bar */
+/* the plan's and the assignment's settings, in the top bar */
 .barbtns {
   display: flex;
   gap: 8px;
@@ -2969,8 +3340,9 @@ input.pinin.pwin {
   fill: none;
   stroke: #6a1b9a;
   stroke-width: 2.5px;
+  stroke-dasharray: 7 5; /* dashed between the points, like the one being measured */
   stroke-linejoin: round;
-  stroke-linecap: round;
+  stroke-linecap: butt;
   vector-effect: non-scaling-stroke;
 }
 .edits .smhalo {
@@ -3020,6 +3392,9 @@ select {
 @media (prefers-reduced-motion: no-preference) {
   .sheet {
     animation: up 0.2s ease-out;
+  }
+  .sheet.stay {
+    animation: none; /* it took another sheet's place: it stands where that one stood */
   }
   @keyframes up {
     from {
@@ -3114,13 +3489,14 @@ select {
   padding-left: 8px;
   padding-right: 8px;
 }
-.pmrow > #pmdel {
-  border-color: var(--danger);
+/* a pair where one label is long (Avbryt / Spara med lösenord): half each when both fit; else the long one takes the
+   room its words need and the other one the rest; and when not even that fits (large text) each takes a row of its
+   own, the main button on top */
+.pmrow.long {
+  flex-wrap: wrap-reverse;
 }
-/* a pair with long labels (Säkerhetskopiera / Radera uppdraget): on a narrow phone each takes a row of its own instead
-   of breaking a word */
 .pmrow.long > .btn {
-  flex-basis: 155px; /* side by side from about 360 px; below that each word would break */
+  min-width: fit-content;
 }
 /* A button alone on its row takes the whole width */
 .btn.wide {
@@ -3296,6 +3672,20 @@ a.btn {
 .smbar i + i {
   border-left: 1.5px solid var(--surface);
 }
+/* how full: one bar in the text's colour, red when little room is left */
+.smfull i {
+  background: var(--ink);
+  min-width: 6px;
+  border-radius: 999px;
+}
+.smfull.high i {
+  background: var(--danger);
+}
+.smlabel {
+  color: var(--muted);
+  font-size: var(--fs-s);
+  margin-top: 6px;
+}
 .smroom {
   color: var(--muted);
   font-size: var(--fs-s);
@@ -3352,17 +3742,18 @@ a.btn {
   width: calc(var(--ecell, 44px) * 0.8);
   height: calc(var(--ecell, 44px) * 0.296);
 }
-/* too little room for four signs a page: slightly smaller cells in the column */
+/* too little room for four signs: slightly smaller cells in the column */
 .etools.symcol.tight {
   --ecell: clamp(34px, 8.5vmin, 46px);
 }
-.etools.symcol .sympage {
-  height: 44px; /* a whole tap target, like the other buttons */
+/* the column of signs scrolls with a finger when they do not all fit (fitSymPage sets its height) */
+.etools.symcol {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  touch-action: pan-y;
 }
-.etools.symcol .sympage:disabled {
-  opacity: 0.25;
-}
-.etools.symcol [hidden] {
+.etools.symcol::-webkit-scrollbar {
   display: none;
 }
 .syms .sym.sel {
@@ -3531,17 +3922,12 @@ a.btn {
   display: block;
   margin-top: 4px;
 }
-/* a short screen: the box of choices beside the column of signs, so the column gets the whole height */
+/* the box of choices beside the column: in ISO always (V1.6.33), elsewhere on a short screen; feet level */
 .ecol.beside {
   flex-direction: row;
   align-items: flex-end;
 }
-/* ISO: the column of signs fills the height a page at a time, so its box (Ångra, the sign's arrows) stays under it,
-   nearest the thumb */
-.editbar.sym .ecol:not(.beside) {
-  flex-direction: column;
-  justify-content: flex-end;
-}
+
 /* the setting "Ritverktygen: Höger": everything of the tools mirrored to the right edge; with the object list open
    the buttons stand beside the list */
 :root[data-hand="right"] .ecol {
@@ -3556,9 +3942,6 @@ a.btn {
   left: auto;
   right: max(12px, env(safe-area-inset-right, 0px));
 }
-:root[data-hand="right"] .vp.with-side .ltools {
-  right: calc(min(48%, 250px) + 12px);
-}
 :root[data-hand="right"] .editbar .mres {
   left: max(8px, env(safe-area-inset-left, 0px));
 }
@@ -3566,11 +3949,8 @@ a.btn {
   :root[data-hand="right"] .ecol {
     flex-direction: row-reverse;
   }
-  .editbar.sym .ecol:not(.beside) {
-    flex-direction: row;
-  }
-  :root[data-hand="right"] .editbar.sym .ecol:not(.beside) {
-    flex-direction: row-reverse;
+  .ecol.beside .eopts .undorow {
+    flex-direction: row; /* a phone on its side lacks the height */
   }
   :root[data-hand="right"] .vp.editing .ltools {
     right: auto;
@@ -3655,16 +4035,199 @@ a.btn {
   color: var(--tag);
   border-color: var(--tag);
 }
+.tchip.prop {
+  background: var(--tag-soft);
+  color: var(--tag-deep);
+}
+/* the owner's review of proposals (Samarbeta) */
+.proposal {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.proposal .phead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.proposal .pdiff {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+  font-size: var(--fs-s);
+  line-height: var(--lh);
+}
+.proposal .pdiff dt {
+  color: var(--muted);
+}
+.proposal .pdiff dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.proposal .pdiff s {
+  color: var(--muted);
+}
+.proposal .ppics {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.proposal .pbtns {
+  display: flex;
+  gap: 10px;
+}
+.proposal .pbtns .btn {
+  flex: 1;
+}
 
-/* Utseende → Färgtema: the button and the page with the colours */
+/* The QR viewfinder (45-qr-skanner): the camera's picture over the whole screen, always dark like the photo editor.
+   The square only helps the aim – the whole picture is searched. Above sheets and messages, below the photo editor.
+   The texts lie on bands that are dark enough to read against whatever the camera shows, a white screen included. */
+.scan {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  background: #000;
+  color: #fff;
+}
+.scan video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.scantop,
+.scanfoot {
+  position: relative;
+  z-index: 2; /* above the square's dimming, so the texts keep their full white */
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+.scantop {
+  padding: max(16px, env(safe-area-inset-top, 0px)) 16px 30px;
+  background: linear-gradient(rgba(0, 0, 0, 0.82) 55%, transparent);
+  font-size: var(--fs-l);
+}
+.scanfoot {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 46px 20px max(22px, env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.84) 40px);
+}
+/* room for two lines whatever it says, so the square does not move when the words change */
+.scanhint {
+  display: grid;
+  align-content: center;
+  margin: 0;
+  max-width: 30em;
+  min-height: calc(2em * var(--lh));
+  font-size: var(--fs-b);
+  line-height: var(--lh);
+  text-wrap: balance;
+}
+.scanbtn {
+  min-width: 160px;
+  min-height: 48px;
+  padding: 10px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(20, 22, 21, 0.6);
+  color: #fff;
+  font-size: var(--fs-b);
+  font-weight: 600;
+}
+/* the square: everything outside it a little darker (the shadow stays still – only the corners inside move) */
+.scanframe {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  width: min(68vw, 44vh, 300px);
+  aspect-ratio: 1;
+  border-radius: 20px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.38);
+}
+.scanaim {
+  position: absolute;
+  inset: 0;
+}
+.scanaim i {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 0 solid #fff;
+  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.75)); /* seen against a white screen too */
+}
+.scanaim i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-width: 4px 0 0 4px;
+  border-top-left-radius: 20px;
+}
+.scanaim i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-width: 4px 4px 0 0;
+  border-top-right-radius: 20px;
+}
+.scanaim i:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 4px 4px;
+  border-bottom-left-radius: 20px;
+}
+.scanaim i:nth-child(4) {
+  bottom: 0;
+  right: 0;
+  border-width: 0 4px 4px 0;
+  border-bottom-right-radius: 20px;
+}
+.scan.found .scanaim i {
+  border-color: #5fd08f;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.noanim) .scanaim i {
+    transition: border-color 0.15s ease;
+  }
+  :root:not(.noanim) .scan:not(.found) .scanaim {
+    animation: scanaim 1.8s ease-in-out infinite;
+  }
+}
+@keyframes scanaim {
+  50% {
+    scale: 0.96;
+  }
+}
+
+/* Utseende → Accentfärg: the button and the page with the colours */
 .accentbtn {
   display: flex;
+  flex-wrap: wrap; /* big text on a narrow phone: the chosen colour goes to a row of its own, at the right… */
   align-items: center;
   gap: 10px;
   text-align: left;
 }
 .accentbtn .grow {
-  flex: 1;
+  flex: 1 1 auto;
+  overflow-wrap: normal; /* …instead of the word Accentfärg breaking in two */
+}
+.accentbtn .acval {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
 }
 .accentbtn i,
 .accents .mrow i {

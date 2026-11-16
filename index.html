@@ -191,14 +191,11 @@ label:focus-within {
 }
 /* Everything that can be pressed answers the finger the same way (V1.6.39): it sinks a little while it is held, as the
    assignment cards and the drawing tools already did. The browser's own grey flash over the button is turned off – the
-   two together looked like two different apps. Wide things (rows, whole-width buttons) sink less than small ones. */
-button,
-label[role="button"],
-a,
-summary,
-input,
-select,
-textarea {
+   two together looked like two different apps. Wide things (rows, whole-width buttons) sink less than small ones.
+   V1.7.4: the flash is off for the whole page (it is inherited), not only for buttons and links – it flashed blue over
+   a tapped object in the list, and since the row opens and the list scrolls while it shows, the flash also landed
+   over the chips above it. */
+html {
   -webkit-tap-highlight-color: transparent;
 }
 .btn,
@@ -483,22 +480,44 @@ textarea {
   gap: 8px;
   box-shadow: 0 -6px 14px rgba(0, 0, 0, 0.08);
 }
-.pickbar .prow1 {
+.prow1 {
   display: flex;
   flex-wrap: wrap; /* big text: Alla and Klar go under the count, together */
   align-items: center;
   gap: 0 10px;
 }
-.pickbar .pcnt {
+.prow1 .pcnt {
   flex: 1 1 auto;
   font-size: var(--fs-b);
   white-space: nowrap;
 }
-.pickbar .pacts {
+.prow1 .pacts {
   flex: none;
   display: flex;
-  gap: 10px;
+  gap: 14px;
   margin-left: auto;
+}
+/* Välj in the side list (V1.7.5): the count, Alla and Klar in the heading, as tall as the heading was, and the buttons
+   on one row at the bottom that scrolls sideways when they do not fit (it fades out where there are more) */
+.sidehead.pickhead .prow1 {
+  flex: 1 1 100%;
+  min-height: 40px;
+}
+.pickbar.pbonly {
+  padding-top: 8px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.pickbar.pbonly .prow2 {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pickbar.pbonly .prow2::-webkit-scrollbar {
+  display: none;
+}
+.pickbar.pbonly .prow2 .sbtn {
+  flex: 1 0 auto;
+  white-space: nowrap;
 }
 .pickbar .prow2 {
   display: flex;
@@ -2317,6 +2336,10 @@ img.tload,
 .busy.prog .pbox {
   width: min(320px, calc(100vw - 48px));
   display: grid;
+  grid-template-columns: minmax(
+    0,
+    1fr
+  ); /* V1.7.6: a long drawing name no longer pushes the row (and %) out of the box */
   gap: 8px;
   padding: 16px 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -2348,6 +2371,7 @@ img.tload,
   background: none;
 }
 .pstep {
+  min-width: 0;
   color: var(--muted);
   font-weight: 500;
   font-size: var(--fs-s);
@@ -2356,15 +2380,10 @@ img.tload,
   text-overflow: ellipsis;
 }
 .ppct {
+  flex: none;
   font-family: var(--font-num);
   font-size: var(--fs-s);
   font-variant-numeric: tabular-nums;
-}
-.pleft {
-  color: var(--muted);
-  font-weight: 500;
-  font-size: var(--fs-xs);
-  min-height: 1em;
 }
 @media (prefers-reduced-motion: reduce) {
   .ptrack i {

@@ -6,7 +6,32 @@ Vad som är nytt eller ändrat i varje version som laddats upp till GitHub, nyas
 
 ## V1.8 – kommande (ännu inte uppladdad)
 
-Inga ändringar än.
+Inget ännu.
+
+---
+
+## V1.7.16 – 2026-11-16
+
+Samlar ändringarna från V1.7.1–V1.7.16.
+
+**Nytt**
+- **Informationsruta/Symbolförteckning.** Ett nytt val under Ta med i exporten i Exportera bestämmer om rutan med uppdragsinformationen och symbolförteckningen kommer med på översiktsritningarna. Valet sparas per uppdrag och är påslaget från början.
+- **Tiderna för de senaste exporterna står i Fellogg.** Under Inställningar → Fellogg visas de 10 senaste exporterna med hur lång tid de tog och hur tiden fördelades på ritningar, lägesbilder, foton och själva filen, plus antal objekt och foton. I Android-appen står också hur lång tid det tog att spara filen i telefonen. Det gör det lätt att se var en långsam export fastnar. Inget om uppdraget sparas, och Rensa tar bort tiderna tillsammans med felen.
+
+**Ändrat**
+- **Utseende och Layout och visning är en sida.** Under Inställningar heter den nu Utseende och layout och samlar ljust eller mörkt, accentfärg, föredragen marginal, täta objekt som prickar och mjuka övergångar.
+- **Numret i lägesbilden står där objektet sitter.** I exportens lägesbilder ligger objektets nummer nu mitt på objektets plats, utan pricken och hänvisningslinjen bredvid.
+- **Snabbare export med PDF-ritningar.** En PDF- eller Word-export med en tung PDF-ritning tar nu ungefär en tredjedel av tiden. Fotona läggs in som de är sparade i stället för att göras om, och den lilla översikten i lägesbildernas hörn görs ur den redan ritade ritningen, och PDF-filen blir mindre eftersom varje ritning bara läggs in en gång. Lägesbilderna klipps ur ritningen i stället för att ritas om en och en, lika skarpa som förut. Stapeln står inte heller still under de långa stegen, och när PDF-filen sparas står det Sparar PDF-filen.
+- **Dagens tips och inställningen Visa tips är borttagna.** Tipset över ritningen var det enda tipset i appen. Meddelandena om objekt 1 och om objekt som saknar plats finns kvar.
+- **Exportrutan visar inte längre ungefär hur lång tid som är kvar.** Uppskattningen stämde sällan. Steget och procenten visas som förut.
+- **Större objektlista när du väljer objekt.** I Välj-läget står antalet valda, Alla och Klar i listans rubrik, där Objekt och ✕ annars står, och knapparna Grupp, Kategori, Prioritering och Radera ligger på en enda rad längst ner. Får de inte plats bläddrar du i raden med ett svep åt sidan. Listan får ungefär en tredjedel mer plats än förut. Listan stängs med ett svep som vanligt, eller med ✕ när du tryckt Klar.
+- **Brandcellsgränserna ser ut som i exporten.** På ritningen är linjen alltid 1 mm bred på ritningens papper, med strecken lika långa som i PDF:en, och den växer och krymper med ritningen när du zoomar. Förut blev den aldrig smalare än en viss bredd på skärmen, så när du zoomade ut blev linjen tjockare och strecken längre än de blir i exporten. Utzoomad över en stor ritning är linjen nu lika smal som när ritningen skrivs ut i liten skala.
+
+**Fixat**
+- **Långa ritningsnamn i exportrutan.** Ett långt namn kortas nu av med … i stället för att skjuta procenten utanför rutan.
+- **Ingen blå blixt när du trycker på ett objekt i listan.** Telefonens webbläsare lade en blå ruta över det du tryckte på, och eftersom raden öppnas och listan rullar samtidigt hamnade blixten ibland också ovanför, över kategorierna. Den är nu avstängd i hela appen.
+- **Grupp- och kategoriraden i objektlistan går att svepa i.** När raden är för lång för listan bläddrar du nu i den med ett svep åt sidan. Förut drog svepet i stället in hela objektlistan. Svep på objekten i listan stänger den som förut.
+- **Symbolförteckningen hamnar alltid i det markerade ritningshuvudet.** Är ritningshuvudet för litet läggs förteckningen i fler spalter eller med uppgifterna bredvid listan, och vid behov mindre. Förut kunde den hamna mitt på ritningen, till exempel när den markerade byggnaden låg precis intill ritningshuvudet. Får den inte plats ens i minsta storleken ligger den så mycket i ritningshuvudet som går.
 
 ---
 

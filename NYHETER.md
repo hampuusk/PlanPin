@@ -10,6 +10,16 @@ Inget ännu.
 
 ---
 
+## V1.7.17 – 2026-11-16
+
+**Nytt**
+- **Diagnosverktyg i stället för Fellogg.** Under Inställningar → Diagnosverktyg står hur appen fungerar på telefonen: appversion, webbläsarmotor, skärm och minne, hur mycket som är sparat och hur stora fotona är, hur snabbt ett foto läses ur telefonens lagring, hur lång tid det tar att starta appen, öppna ett uppdrag och spara, felen och de senaste exporterna med tiden för varje ritning och hur fotona lades in. Tryck på **Kopiera diagnos** och klistra in texten när du behöver hjälp. Inget om uppdragen följer med – inga namn, beskrivningar eller foton, bara antal, storlekar och tider.
+
+**Ändrat**
+- **Snabbare foton i exporten, särskilt i Android-appen.** Varje foto läses nu en gång ur telefonens lagring i stället för tre, fotona som görs när fotokvaliteten väljs används igen i stället för att göras om, och äldre foton som sparats lite större (upp till 1 800 px) läggs in som de är. I Android-appen tog fotodelen av en export med 30 foton nästan 14 sekunder.
+
+---
+
 ## V1.7.16 – 2026-11-16
 
 Samlar ändringarna från V1.7.1–V1.7.16.

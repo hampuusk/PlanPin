@@ -163,7 +163,7 @@ label:focus-within {
   border: 0;
   border-radius: var(--r);
   padding: 12px 16px;
-  min-height: 44px;
+  min-height: 48px; /* all buttons the same height (V1.7.23, the user: 48 – Android's own size); the top bar keeps 44 */
   font-weight: 600;
   font-size: var(--fs-b);
   display: inline-flex;
@@ -552,6 +552,7 @@ html {
   }
 }
 .newbtn {
+  min-height: 44px; /* in the top bar, as tall as the buttons beside it */
   gap: 0;
   white-space: pre;
   padding: 9px 14px;
@@ -589,7 +590,6 @@ html {
 }
 .storinfo .linkbtn {
   justify-self: start;
-  font-size: var(--fs-s);
 }
 .lostcard {
   display: grid;
@@ -1404,6 +1404,32 @@ textarea {
   white-space: nowrap;
   cursor: pointer;
 }
+/* a long drawing name (V1.7.29, the same rule as the lists): the tab is at most most of the row, the count goes first
+   (fitCount, 18) and then the name is cut with "…" */
+.floor {
+  max-width: 85%;
+}
+.floor b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.floor .fcount {
+  flex: none;
+}
+/* a heading with a count beside it (a drawing's page): one line, the count goes first, then "…" */
+.shead h2.fitname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.shead .count {
+  flex: none;
+}
+.shead {
+  min-width: 0; /* in the page's grid: the heading follows the sheet's width instead of widening it */
+}
 .floor .fcount {
   font-family: var(--font-num);
   font-variant-numeric: tabular-nums;
@@ -1688,6 +1714,33 @@ textarea {
 }
 .vp.with-side.side-left .hint {
   left: calc(var(--sidew) + (100% - var(--sidew)) / 2);
+}
+/* Självtest under Diagnosverktyg (V1.7.31): the three levels side by side, each with its time below its name */
+.stlevels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.stlevels .btn {
+  display: grid;
+  gap: 2px;
+  padding: 6px 8px;
+}
+.stlevels .btn small {
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.stbusy .pbox {
+  display: grid;
+  gap: 10px;
+}
+/* the list over the whole screen (V1.7.30): swiped away from its edge; the drawing lies unchanged behind it */
+.vp .side.full {
+  width: 100%;
+  border-left: 0;
+  border-right: 0;
+  box-shadow: none;
 }
 /* the list on the tools' side (the default, Föredragen marginal: vänster): the left edge */
 .vp.side-left .side {
@@ -2112,6 +2165,19 @@ textarea {
 .catitem .sbtn {
   flex: 0 0 auto;
   padding: 7px 12px;
+  font-size: var(--fs-b); /* Ändra and Radera as large as the other buttons' words (V1.7.23) */
+}
+/* the default group's star (V1.7.25): a square button, filled in the accent colour when it is the default */
+.catitem .sbtn.star {
+  width: 44px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+}
+.catitem .sbtn.star.on {
+  color: var(--tag);
+  border-color: var(--tag);
 }
 /* One line: category, number of points, Ändra, Radera. A long single-word name is shortened with "…" */
 .catlist,
@@ -2124,6 +2190,7 @@ textarea {
 .catitem.one .cat {
   min-width: 0;
   flex: 0 1 auto;
+  margin-right: auto; /* the buttons stay on the right also when the count is hidden (V1.7.26) */
 }
 .catitem.one .cn {
   min-width: 0;
@@ -2169,6 +2236,12 @@ textarea {
   font-weight: 600;
   font-size: var(--fs-l);
 }
+.pbtn.txt {
+  width: auto; /* a word (Ingen) beside the numbers, as tall as they are */
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: var(--fs-b);
+}
 .pbtn.on {
   background: var(--ink);
   color: var(--surface);
@@ -2185,8 +2258,8 @@ input[type="date"] {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r);
-  padding: 11px 12px;
-  min-height: 46px;
+  padding: 0 12px;
+  height: 48px; /* as tall as the text fields (V1.7.23) */
 }
 @media (max-width: 380px) {
   .hint {
@@ -2222,8 +2295,9 @@ input[type="date"] {
   text-align: left;
   border: 1px solid var(--line);
   background: var(--surface);
-  border-radius: 10px;
-  padding: 8px 10px;
+  border-radius: 22px; /* round like the categories on one line, a rounded box on two (V1.7.23) */
+  padding: 8px 14px;
+  min-height: 44px; /* as tall as the categories, and a whole tap target */
   font-size: var(--fs-m);
   line-height: var(--lh);
   color: var(--ink);
@@ -2744,7 +2818,6 @@ input.pinin.pwin {
 }
 .favadd {
   justify-self: start;
-  font-size: var(--fs-s);
 }
 .frow.phr {
   display: flex;
@@ -3407,6 +3480,7 @@ select {
   border: 1px solid var(--line);
   border-radius: var(--r);
   padding: 11px 10px;
+  min-height: 48px; /* as tall as the text fields (V1.7.23) */
 }
 @media (prefers-reduced-motion: no-preference) {
   .sheet {

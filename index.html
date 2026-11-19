@@ -205,8 +205,8 @@ html {
 .cat,
 .seg,
 .floor,
-.pickbtn,
 .sideclose,
+.flupe,
 .mrow,
 .choice,
 .ocard,
@@ -222,8 +222,8 @@ html {
 .cat:active,
 .seg:active,
 .floor:active,
-.pickbtn:active,
-.sideclose:active {
+.sideclose:active,
+.flupe:active {
   transform: scale(0.95);
 }
 .btn:active,
@@ -369,18 +369,6 @@ html {
   pointer-events: none;
   z-index: 4;
 }
-.pickbtn {
-  flex: none;
-  white-space: nowrap;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: 999px;
-  padding: 5px 10px;
-  min-width: 44px;
-  min-height: 44px;
-  font-weight: 600;
-  font-size: var(--fs-s);
-}
 /* Ritningsinställningar → Underlag: the file the drawing came from */
 .fileline {
   margin: 0;
@@ -465,6 +453,87 @@ html {
   border-width: 0 2.5px 2.5px 0;
   transform: rotate(45deg);
 }
+/* Alla under the search (V1.7.34): a box like the objects' own, at the same place from the list's edge (the side
+   list's items have a 4 px edge on the left), beside how many are chosen; Klar to the right */
+.prow1.pickall {
+  flex-wrap: wrap; /* very big text on a narrow phone: Klar goes to its own row, to the right */
+  gap: 0 6px;
+  min-width: 0;
+  border-bottom: 1px solid var(--line);
+}
+/* the search part never gets wider than the list because of the row under it (big text on a narrow phone) */
+.side .fbar {
+  grid-template-columns: minmax(0, 1fr);
+}
+.side .prow1.pickall {
+  border-left: 4px solid transparent;
+  padding-right: 12px;
+}
+/* under the search: to the list's edges, out of the search part's own padding. Closer to the chips than the bar's own
+   gap (V1.7.42, the user): the row is 44 px high for the finger, so its box already has air above it */
+.fbar .prow1.pickall {
+  margin-top: -4px;
+}
+.side .fbar .prow1.pickall {
+  margin: -4px -10px -8px;
+}
+.pickallbox {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 4px 4px 4px 42px; /* with normal text "Välj objekt", the box and Klar fit the narrowest list (184 px) */
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+/* the box shrinks (its words break) before Klar leaves the row: a row is filled by the items' widths before they shrink,
+   so with its full width as the start "Välj objekt" sent Klar to a row of its own at big text though both fit (V1.7.45,
+   c_pick_pair_random) – now Klar goes only when the box's longest word and Klar cannot share the row */
+.prow1.pickall .pickallbox {
+  flex: 1 1 0;
+  min-width: min-content;
+}
+.prow1.pickall .pickallbox .pcnt {
+  font-size: var(--fs-b);
+  white-space: normal; /* not the count row's nowrap (.prow1 .pcnt): "Välj objekt" may break between its words */
+}
+.prow1.pickall #pickdone {
+  flex: none;
+  margin-left: auto;
+  min-height: 44px;
+}
+.pickallbox::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  border: 2px solid var(--muted);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.pickallbox.on::before {
+  background: var(--tag);
+  border-color: var(--tag);
+}
+.pickallbox.on::after {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 50%;
+  width: 6px;
+  height: 11px;
+  margin-top: -8px;
+  border: solid var(--tag-ink);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
 .sitem.picking .sactions {
   display: none !important;
 }
@@ -491,18 +560,8 @@ html {
   font-size: var(--fs-b);
   white-space: nowrap;
 }
-.prow1 .pacts {
-  flex: none;
-  display: flex;
-  gap: 14px;
-  margin-left: auto;
-}
-/* Välj in the side list (V1.7.5): the count, Alla and Klar in the heading, as tall as the heading was, and the buttons
-   on one row at the bottom that scrolls sideways when they do not fit (it fades out where there are more) */
-.sidehead.pickhead .prow1 {
-  flex: 1 1 100%;
-  min-height: 40px;
-}
+/* Välj in the side list: the buttons on one row at the bottom that scrolls sideways when they do not fit (it fades out
+   where there are more) */
 .pickbar.pbonly {
   padding-top: 8px;
   padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
@@ -1588,6 +1647,37 @@ textarea {
   color: var(--ink); /* it closes the list and deletes nothing: not red (V1.6.39) */
   font-weight: 700;
 }
+/* the search's magnifier (V1.7.42): the same round button as ✕ beside it; while the search is open it is filled */
+.flupe {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+.flupe .ico {
+  width: 24px;
+  height: 24px;
+}
+.flupe.on {
+  background: var(--tag-soft);
+  border-color: var(--tag);
+  color: var(--tag-deep);
+}
+.prow1.pickall .flupe {
+  margin-left: auto;
+}
+.prow1.pickall .flupe + #pickdone {
+  margin-left: 6px;
+}
+.orow .flupe {
+  align-self: center;
+}
 .side .spacer {
   height: 96px;
   flex: 0 0 auto;
@@ -1607,23 +1697,39 @@ textarea {
   display: grid;
   gap: 4px;
 }
+/* V1.7.36 (the user): the number, then the category, type, group and Prio on the same row; what does not fit goes on
+   to the next row. The photo sits in the top right corner, beside them. */
+.sitem {
+  position: relative;
+}
 .sitem .stop {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px;
+  display: block; /* text flow round the photo: only the rows beside it make room for it, the rest get all the width */
+  min-height: 33px;
+}
+.sitem .stop::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.sitem .stop b {
+  display: inline-block;
+  line-height: 33px; /* the first row as high as the photo, so the rows after it have the whole width */
+  margin-right: 8px;
+  vertical-align: middle;
 }
 .sitem .stags {
-  grid-column: 1 / -1; /* its own row under the number and photo: room for long category names */
-  grid-row: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 8px;
-  min-width: 0;
+  display: contents;
 }
-.sitem .stags:empty {
-  display: none;
+.sitem .stags > *,
+.sitem .stags .ometa > * {
+  display: inline-flex;
+  max-width: 100%;
+  margin: 3px 8px 3px 0;
+  vertical-align: middle;
+}
+.sitem .stags .ometa,
+.otop .ometa {
+  display: contents;
 }
 .sitem .sfloor {
   font-size: var(--fs-xs);
@@ -1652,11 +1758,12 @@ textarea {
   font-variant-numeric: tabular-nums;
 }
 .sitem .stop img {
+  float: right;
+  margin-left: 8px;
   width: 44px;
   height: 33px;
   object-fit: cover;
   border-radius: 4px;
-  grid-column: 3;
 }
 .sitem p {
   margin: 0;
@@ -1743,6 +1850,15 @@ textarea {
   display: grid;
   gap: 10px;
 }
+/* the phone's warmth, processor and memory right now (V1.7.39): may take two rows, never cut */
+.stbusy #stlive {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.stbusy #stlive:empty {
+  display: none;
+}
 /* the list over the whole screen (V1.7.30): swiped away from its edge; the drawing lies unchanged behind it */
 .vp .side.full {
   width: 100%;
@@ -1822,6 +1938,69 @@ textarea {
   padding: 8px 10px;
   border-bottom: 1px solid var(--line);
 }
+/* the search field and the category chips in one place (V1.7.46, filterBar in 17): when the search opens the chips
+   glide away downwards and the field glides down into their place, and back when it closes. Both lie in the same
+   cell, so the list under them does not move. Without chips the place is empty while the search is closed. */
+.fswap {
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  /* room for the field's focus ring (2 px line 2 px out), which the gliding's clipping would cut – 3 px cut its sides
+     and squared its round corners (V1.7.47, the user) */
+  padding: 6px;
+  margin: -6px;
+}
+.fswap > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+  transition:
+    transform 0.22s ease,
+    opacity 0.18s ease,
+    visibility 0s;
+}
+.fswap > .fqbox,
+.fbar.sopen .fswap > .fchips {
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.22s ease,
+    opacity 0.18s ease,
+    visibility 0s 0.22s;
+}
+.fbar.sopen .fswap > .fchips {
+  transform: translateY(100%);
+}
+.fbar.sopen .fswap > .fqbox {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.fbar:not(.sopen) .fswap.solo {
+  display: none;
+}
+.fbar.sopen .fswap.solo > .fqbox {
+  animation: fqin 0.22s ease;
+}
+@keyframes fqin {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+.fbar.still .fswap > *,
+.fbar.still .fswap.solo > .fqbox {
+  transition: none;
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fswap > *,
+  .fbar.sopen .fswap.solo > .fqbox {
+    transition: none;
+    animation: none;
+  }
+}
 .fsearch {
   width: 100%;
   font: inherit;
@@ -1846,6 +2025,24 @@ textarea {
   flex: none;
   font-size: var(--fs-s);
   padding: 5px 10px;
+}
+/* typing in the list's search with the keyboard up (typingCheck in 17): Exportera and the choosing buttons at the
+   bottom step aside (V1.7.43); the rest of the list stays as it is (V1.7.46) */
+body.typing .view > .foot,
+body.typing .opick,
+body.typing .side .pickbar {
+  display: none;
+}
+.ffoot[hidden] {
+  display: none;
+}
+.fbar.fempty {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.side .fbar.fempty .prow1.pickall {
+  margin: 0 -10px;
 }
 .ffoot {
   display: flex;
@@ -2696,6 +2893,47 @@ img.tload,
 }
 .otop:empty {
   display: none;
+}
+/* the group and Prio of an object (V1.7.35): in the object list only when it fills the screen */
+.ometa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 4px 0 2px;
+  min-width: 0;
+}
+.side:not(.full) .smeta {
+  display: none;
+}
+/* while the list's width is dragged or glides: faded with it (metaFade in 17, V1.7.48) */
+.side .smeta > * {
+  opacity: var(--mo, 1);
+}
+/* arrived at the whole screen from half: they fade in (setSideFull in 17, V1.8) */
+.side.metain .smeta > * {
+  animation: smetain 0.22s ease;
+}
+@keyframes smetain {
+  from {
+    opacity: 0;
+  }
+}
+.ogrp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.ogrp i {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 .oprio {
   font-family: var(--font-num);

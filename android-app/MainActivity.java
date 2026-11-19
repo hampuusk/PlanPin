@@ -4,11 +4,15 @@ import android.app.ActivityManager;
 import android.app.ApplicationExitInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Parcelable;
+import android.os.PowerManager;
+import android.os.Process;
 import android.os.StatFs;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.JSArray;
@@ -36,6 +40,10 @@ import com.getcapacitor.annotation.CapacitorPlugin;
  * 4. For Diagnosverktyg (V1.7.21): the phone's memory (free, total, whether Android finds it low) and the app's own
  *    use, and why the app ended the last times (Android 11 and newer: by the user, a crash, for lack of memory…).
  *    Only numbers and Android's own words for the reason; read on request, kept nowhere, sent nowhere.
+ *
+ * 5. For Självtest (V1.7.39): the battery's temperature (apps cannot read the processor's own; the battery follows it),
+ *    Android's heat level and how close it is to slowing the phone down, and the processor time this app's own
+ *    process has used. Numbers only, read on request every few seconds during the test, kept nowhere, sent nowhere.
  */
 public class MainActivity extends BridgeActivity {
 
@@ -111,6 +119,33 @@ public class MainActivity extends BridgeActivity {
                 JSObject r = new JSObject();
                 r.put("api", Build.VERSION.SDK_INT);
                 r.put("list", list);
+                call.resolve(r);
+            } catch (RuntimeException e) {
+                call.reject("unavailable");
+            }
+        }
+
+        /** The phone's warmth and the app's processor time, for Självtest. Whole numbers only: tenths of a degree,
+         *  thousandths of the heat margin (1000 = Android starts to slow the phone down), milliseconds. */
+        @PluginMethod
+        public void vitals(PluginCall call) {
+            try {
+                Context c = getContext();
+                JSObject r = new JSObject();
+                Intent b = c.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED)); // the latest, nothing registered
+                if (b != null) {
+                    r.put("tempTenths", b.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -10000));
+                    r.put("level", b.getIntExtra(BatteryManager.EXTRA_LEVEL, -1));
+                    r.put("scale", b.getIntExtra(BatteryManager.EXTRA_SCALE, -1));
+                    r.put("plugged", b.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0);
+                }
+                PowerManager pm = (PowerManager) c.getSystemService(Context.POWER_SERVICE);
+                if (pm != null && Build.VERSION.SDK_INT >= 29) r.put("thermal", pm.getCurrentThermalStatus());
+                if (pm != null && Build.VERSION.SDK_INT >= 30) {
+                    float hr = pm.getThermalHeadroom(10);
+                    if (!Float.isNaN(hr)) r.put("headroomMilli", Math.round(hr * 1000));
+                }
+                r.put("cpuMs", Process.getElapsedCpuTime());
                 call.resolve(r);
             } catch (RuntimeException e) {
                 call.reject("unavailable");

@@ -43,14 +43,16 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 - **Mät** längder och sträckor, med en decimal och i km från 1 000 m. Ange skala eller kalibrera mot en känd längd. En mätning kan sparas med ett namn, till exempel ett gångavstånd. De sparade mätningarna syns bara i Mät och kan exporteras på en egen översiktsritning.
 - Ångra ett steg i taget. Ändringarna kan visas i blått i protokollet.
 
-**Symbolverktyget (ISO)**
-- ISO 7010-skyltar på ritningen: handbrandsläckare, inomhusbrandpost, brandlarmsknapp, utrymningsplats, återsamlingsplats, utrymningsfönster, utrymningsfönster med stege, räddningsfönster, utrymningsstege, utrymningshiss och vägledande markeringar uppåt, neråt, åt vänster och åt höger, även tillgänglighetsanpassad väg för utrymning, både vita och efterlysande (gula). Skyltarna ligger sorterade efter färg, med de vägledande markeringarna i följd.
+**Symbolverktyget (verktygslådan)**
+- ISO 7010-skyltar på ritningen: handbrandsläckare, inomhusbrandpost, brandlarmsknapp, utrymningsplats, återsamlingsplats, utrymningsfönster, utrymningsfönster med stege, räddningsfönster, utrymningsstege, utrymningshiss och vägledande markeringar uppåt, neråt, åt vänster, åt höger och snett (45°), även tillgänglighetsanpassad väg för utrymning, både vita och efterlysande (gula). Skyltarna ligger sorterade efter färg, med de vägledande markeringarna i följd.
 - Symbolerna är 7,5 mm (markeringarna 7,5 × 3,75 mm) på ritningens papper, gånger symbolstorleken som följer pappersformatet (A1 ×2) eller väljs per ritning. Pappersformatet läses från PDF:en eller väljs när ritningen läggs in.
+- Skyltarna kan vridas fritt med en knopp, och få en **hänvisningslinje** med prick så att skylten kan stå en bit från det den visar.
+- Två grupper i verktyget: **Symboler** och **Områden**. Under Områden finns **Brandcellsgräns** (klass och tid, färg efter tiden), **brandteknisk klass för dörrar och fönster**, och **färgade områden**: Utrymningsväg, Nödbelysning, Utrymningsväg med nödbelysning (överstrykning som inte täcker ritningens linjer) och Ej inventerat (röda diagonala linjer). Ett område ritas som en ruta eller punkt för punkt.
 - **Anteckning med hänvisningspil:** en gul ruta med text i 10 pt och en blå pil till platsen den gäller.
 
 **Export**
 - **PDF:** ett avsnitt per grupp med en översiktsritning för varje ritning och en tabell med nummer, beskrivning, lägesbild och foton. Översiktsritningarna är ritningens egen sida i full storlek (en A1 förblir A1) med objekten och symbolerna utsatta; på dem har numren kategoriernas färger. Symbolerna får en egen översiktsritning, och du väljer vilka gruppers ritningar som också ska visa dem. På varje översiktsritning ligger en ruta i ritningshuvudets stil – översiktens namn, uppdragets uppgifter och en symbolförteckning – där ritningen har plats, oftast i marginalen ovanför ritningshuvudet.
-- **Redigerbart i Bluebeam:** på symbolritningen ligger symbolerna och anteckningarna som markeringar, så de kan flyttas, ändras i storlek, vridas och få ny text i Bluebeam och Acrobat.
+- **Redigerbart i Bluebeam:** allt som lagts på ritningen – symboler, anteckningar, väggar, dörrar, fönster, brandcellsgränser, områden, mätningar och objektens nummer – ligger som markeringar på översiktsritningarna, så de kan flyttas, ändras i storlek, vridas och få ny text i Bluebeam och Acrobat.
 - **Word:** samma tabell som redigerbar fil, med översiktsritningarna som separat PDF.
 - **Logga:** ladda upp din logga (JPEG, PNG eller SVG) under Inställningar och välj om den ska stå till vänster, i mitten eller till höger. Med Exportera med logga hamnar den i sidhuvudet på tabellsidorna i PDF och Word.
 - Stora uppdrag delas upp i flera PDF- eller Word-filer med högst 2 000 objekt per fil, så att exporten fungerar även på telefoner med lite minne.
@@ -72,7 +74,8 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 - Med PIN-kod eller lösenord på hålls flera öppna flikar i samma webbläsare i takt: låses en, låses alla.
 - Lås med PIN-kod eller lösenord. Allt som sparas krypteras då (AES-256), och appen låses efter 30 minuter utan aktivitet.
 - Säkerhetskopior är vanliga zip-filer (uppgifterna som JSON, ritningar och foton som filer) som kan läsas in på en annan telefon – och öppnas utan appen om det skulle behövas. De kan krypteras med ett lösenord du väljer. Snabbtexterna och kontrollantens namn följer med i kopian, och ett delat uppdrag fortsätter att vara delat efter inläsningen.
-- Android-appen saknar helt behörighet att använda internet.
+- Android-appen saknar helt behörighet att använda internet. Den har tre behörigheter: kameran (frågas första gången du tar ett foto), vibration (den korta vibrationen när en punkt sätts; ges vid installationen) och, bara på Android 10 och äldre, lagring.
+- **Diagnosverktyget** (Inställningar) visar hur appen fungerar på telefonen och börjar med en bedömning i klartext av vad som avviker. Det ser efter att det sparade hänger ihop, hur säkerheten står, hur appen har startat och slutat, och att knappar, texter och meddelanden får plats på just den skärmen – och har en händelselogg över de senaste stegen i appen (knappar, rutor och tryck på ritningen; aldrig texter, namn eller foton) som kan stängas av. Allt stannar på telefonen och följer bara med om du själv kopierar diagnosen. **Självtestet** där kör ett eget testuppdrag genom allt appen kan – också krypteringen, lagringens fart och Samarbeta – och tar sedan bort det.
 - Säkerhetskopior och delade uppdrag kan öppnas med Android-appen direkt från filhanteraren. Android känner inte till filsorten, så PlanPin erbjuds för zip-filer och filer av okänd sort; det som inte är en fil från PlanPin avvisas utan att läsas in, och en okrypterad säkerhetskopia läses in först när du har svarat ja.
 
 **Övrigt**

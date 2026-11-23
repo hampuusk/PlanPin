@@ -65,6 +65,7 @@ jobs:
           PERMS=$("$BT/aapt" dump permissions "$OUT"); echo "$PERMS"
           if echo "$PERMS" | grep -q INTERNET; then echo "::error::Appen har internetbehörighet"; exit 1; fi
           echo "$PERMS" | grep -q "android.permission.CAMERA" || { echo "::error::Kamerabehörigheten saknas"; exit 1; }
+          echo "$PERMS" | grep -q "android.permission.VIBRATE" || { echo "::error::Vibrationsbehörigheten saknas"; exit 1; }
           # what the phone may hand the app from outside (patch-android.mjs): the invitation link and shared files
           XML=$("$BT/aapt" dump xmltree "$OUT" AndroidManifest.xml)
           echo "$XML" | grep -q '"planpin"' || { echo "::error::Appen tar inte emot länken planpin://"; exit 1; }

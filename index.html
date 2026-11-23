@@ -23,6 +23,12 @@ html {
 }
 /* Layout: one-screen app. Project list → full-bleed drawing with pan/zoom, bottom bar, slide-up sheets. Markers are numbered site tags. */
 :root {
+  /* the drawing tools' columns (V1.8.23, the user chose B: narrower, closer to the edge): from the screen's edge, between
+     two columns, around and between the cells; the buttons at the bottom centred under the column */
+  --eedge: 4px;
+  --ecolgap: 4px;
+  --egap: 3px;
+  --ledge: 6px;
   --paper: #f6f7f5;
   --surface: #ffffff;
   --ink: #1d2321;
@@ -1486,6 +1492,19 @@ textarea {
 .shead .count {
   flex: none;
 }
+/* V1.8.44: a heading of the app's own words with a name beside it (the drawing's, in the object's sheet and Skala):
+   the heading keeps its words on one row, and the name is shortened with … when there is not room for all of it */
+.shead h2.keep {
+  flex: 1 0 auto;
+  white-space: nowrap;
+}
+.shead .count.long {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .shead {
   min-width: 0; /* in the page's grid: the heading follows the sheet's width instead of widening it */
 }
@@ -1548,6 +1567,27 @@ textarea {
   width: 20px;
   height: 20px;
   accent-color: var(--tag);
+}
+/* Utseende och layout → Håll still: one row, the seconds in a small box at its right (V1.8.30) */
+.check.holdrow {
+  cursor: default;
+}
+.check.holdrow input {
+  width: 3.6em;
+  height: 36px;
+  margin-left: auto;
+  padding: 0 6px;
+  text-align: center;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.check.holdrow .unit {
+  color: var(--muted);
+  font-weight: 600;
 }
 .flist {
   display: grid;
@@ -1735,6 +1775,7 @@ textarea {
   font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--ink);
+  overflow-wrap: anywhere; /* V1.8.44: a drawing's name in one long word made the list wider than its room (Alla) */
 }
 /* Denna / Alla (before V1.6.41: Detta plan / Alla plan): one row across the narrow list, half each (granskningen #19) */
 .sidescope {
@@ -1822,16 +1863,21 @@ textarea {
 .vp.with-side.side-left .hint {
   left: calc(var(--sidew) + (100% - var(--sidew)) / 2);
 }
-/* Självtest under Diagnosverktyg (V1.7.31): the three levels side by side, each with its time below its name */
+/* Självtest under Diagnosverktyg (V1.7.31): the three levels side by side, each with its time below its name.
+   V1.8.44: a level's name is never broken inside the word (Snab-b, Norm-al on a narrow phone with large text) – the
+   levels are as wide as each other while there is room, and one that does not fit goes to the next row */
 .stlevels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 .stlevels .btn {
+  flex: 1 1 0;
+  min-width: min-content;
   display: grid;
   gap: 2px;
   padding: 6px 8px;
+  overflow-wrap: normal;
 }
 .stlevels .btn small {
   font-weight: 400;
@@ -1938,7 +1984,7 @@ textarea {
   padding: 8px 10px;
   border-bottom: 1px solid var(--line);
 }
-/* the search field and the category chips in one place (V1.7.46, filterBar in 17): when the search opens the chips
+/* the search field and the category chips (or, on the start page, the sorting – V1.8.5) in one place (V1.7.46, filterBar in 17): when the search opens the chips
    glide away downwards and the field glides down into their place, and back when it closes. Both lie in the same
    cell, so the list under them does not move. Without chips the place is empty while the search is closed. */
 .fswap {
@@ -1959,7 +2005,7 @@ textarea {
     visibility 0s;
 }
 .fswap > .fqbox,
-.fbar.sopen .fswap > .fchips {
+.sopen > .fswap > :not(.fqbox) {
   transform: translateY(-100%);
   opacity: 0;
   visibility: hidden;
@@ -1968,19 +2014,19 @@ textarea {
     opacity 0.18s ease,
     visibility 0s 0.22s;
 }
-.fbar.sopen .fswap > .fchips {
+.sopen > .fswap > :not(.fqbox) {
   transform: translateY(100%);
 }
-.fbar.sopen .fswap > .fqbox {
+.sopen > .fswap > .fqbox {
   transform: none;
   opacity: 1;
   visibility: visible;
   transition-delay: 0s;
 }
-.fbar:not(.sopen) .fswap.solo {
+:not(.sopen) > .fswap.solo {
   display: none;
 }
-.fbar.sopen .fswap.solo > .fqbox {
+.sopen > .fswap.solo > .fqbox {
   animation: fqin 0.22s ease;
 }
 @keyframes fqin {
@@ -1989,14 +2035,14 @@ textarea {
     opacity: 0;
   }
 }
-.fbar.still .fswap > *,
-.fbar.still .fswap.solo > .fqbox {
+.still > .fswap > *,
+.still > .fswap.solo > .fqbox {
   transition: none;
   animation: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .fswap > *,
-  .fbar.sopen .fswap.solo > .fqbox {
+  .sopen > .fswap.solo > .fqbox {
     transition: none;
     animation: none;
   }
@@ -2250,6 +2296,9 @@ body.typing .side .pickbar {
   line-height: var(--lh);
   min-width: 0;
   max-width: 100%;
+  /* V1.8.44 (found by the app's own Layoutkontroll): a word longer than the list is wide – "Brandcellsgräns" in the
+     narrow list beside the drawing with the phone's text at 150 % – is broken, not left sticking out under the edge */
+  overflow-wrap: anywhere;
 }
 .cchip.w1 {
   /* one word: shortened with … ; several words wrap (see oneWord) */
@@ -2596,6 +2645,9 @@ img.tload,
   max-width: calc(100% - 32px);
   text-align: center;
   pointer-events: none;
+  /* V1.8.44: a name in one long word (a drawing's file name) breaks instead of running out of the message and the
+     screen */
+  overflow-wrap: anywhere;
 }
 .busy {
   position: fixed;
@@ -2611,6 +2663,9 @@ img.tload,
   padding: 14px 20px;
   border-radius: 12px;
   font-weight: 600;
+  /* V1.8.44: never wider than the screen – "Läser in <namn>…" with a name in one long word was */
+  max-width: calc(100vw - 32px);
+  overflow-wrap: anywhere;
 }
 .busy.prog .pbox {
   width: min(320px, calc(100vw - 48px));
@@ -3045,7 +3100,14 @@ input.pinin.pwin {
   gap: 14px;
   padding: 6px 6px 6px 16px;
 }
+/* V1.8.44: a long name breaks in the message's text – never in Ångra, which keeps its word and its width */
+.toast.undo span {
+  min-width: 0;
+}
 .toast.undo button {
+  flex: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
   pointer-events: auto;
   border: 0;
   border-radius: 999px;
@@ -3288,6 +3350,16 @@ input.pinin.pwin {
   --ecell: clamp(44px, 11vmin, 58px);
   --lcell: var(--ecell);
 }
+/* whole pixels (V1.8.22): a cell of a fraction of a pixel put the rows of two columns a fraction apart, and showed a
+   sliver of the next sign at the foot of the column of signs */
+@supports (width: round(1.5px, 1px)) {
+  .vp {
+    --ecell: round(clamp(44px, 11vmin, 58px), 1px);
+  }
+  .vp .ecol.tight {
+    --ecell: round(clamp(34px, 8.5vmin, 46px), 1px);
+  }
+}
 .editbar {
   position: absolute;
   inset: 0;
@@ -3297,38 +3369,52 @@ input.pinin.pwin {
 .ecol {
   position: absolute;
   top: 10px;
-  left: max(8px, env(safe-area-inset-left, 0px));
+  left: max(var(--eedge), env(safe-area-inset-left, 0px));
   bottom: calc(var(--lcell) + 32px); /* clear of the one button at the bottom (the tool that is out) */
   display: flex;
   flex-direction: column-reverse; /* from the bottom: Ångra and Gör om, the tools, the box of choices above them */
   align-items: flex-start;
-  gap: 8px;
+  gap: var(--ecolgap);
   pointer-events: none;
 }
 .etools,
 .eopts {
   pointer-events: auto;
   display: grid;
-  gap: 4px;
-  padding: 4px;
+  gap: var(--egap);
+  padding: var(--egap);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
-/* ISO: the line between Senast använda and the whole list */
-.symcol .symsep {
-  align-self: stretch;
-  margin: 2px 6px;
-  border: 0;
+/* ISO: the line between Senast använda and the whole list, in the gap above the list's first sign – taking no room of
+   its own, so the signs stay on the same rows as the box beside (V1.8.21) */
+.symcol .etool.sepabove {
+  position: relative;
+}
+.symcol .etool.sepabove::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: calc(var(--egap) / -2 - 1px); /* in the middle of the gap */
   border-top: 2px solid var(--line);
+  pointer-events: none;
 }
 /* ISO: Gör om above Ångra, so the box is one column wide like in the other tools; it stands beside the column of signs
    (fitSymPage) */
 .eopts .undorow {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--egap);
+}
+/* the box gone on in a second column (fitSymPage): Gör om and Ångra each a cell of the grid, not one cell two high that
+   leaves a gap beside the first list (V1.8.30); a phone on its side keeps them side by side in one row (below) */
+@media (min-height: 521px) {
+  .eopts.wrapped .undorow {
+    display: contents;
+  }
 }
 .eopts:empty {
   display: none;
@@ -3366,11 +3452,11 @@ input.pinin.pwin {
 /* a short screen: the box of choices beside the tools instead of above them */
 .ecol .eopts.aside {
   position: absolute;
-  left: calc(100% + 8px);
+  left: calc(100% + var(--ecolgap));
 }
 :root[data-hand="right"] .ecol .eopts.aside {
   left: auto;
-  right: calc(100% + 8px);
+  right: calc(100% + var(--ecolgap));
 }
 /* with the tools at the right edge the box's first column is the one over them: further columns go to the left */
 :root[data-hand="right"] .editbar:not(.sym) .ecol .eopts {
@@ -3407,7 +3493,34 @@ input.pinin.pwin {
   width: calc(var(--ecell, 44px) * 0.7);
   height: calc(var(--ecell, 44px) * 0.14);
 }
+/* Brandteknisk klass, dörr: each part in its cell (a long one on two lines), in its list on one line */
+.doorface {
+  font: 700 calc(var(--ecell, 44px) * 0.2) / 1.05 var(--font-num, sans-serif);
+  text-align: center;
+  overflow-wrap: normal;
+  pointer-events: none;
+}
+.doorface.big {
+  font-size: calc(var(--ecell, 44px) * 0.3);
+}
+.doorface sub {
+  font-size: 0.7em;
+  vertical-align: -0.25em;
+  line-height: 0;
+}
+.doorpop .eopt.firepick {
+  width: auto;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+.doorpop .doorface,
+.doorpop .doorface.big {
+  font-size: 15px;
+}
 .firepop {
+  /* when it scrolls it comes to rest on its rows, level with the cells beside (V1.8.21) */
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: var(--egap);
   position: fixed;
   z-index: 41;
   grid-auto-rows: max-content;
@@ -3458,7 +3571,7 @@ input.pinin.pwin {
 .editbar .mres {
   position: absolute;
   top: 10px;
-  left: calc(max(8px, env(safe-area-inset-left, 0px)) + 64px);
+  left: calc(max(var(--eedge), env(safe-area-inset-left, 0px)) + var(--ecell, 44px) + 2 * var(--egap) + 2px + 10px);
   padding: 8px 12px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -3515,16 +3628,18 @@ input.pinin.pwin {
      whole height */
   .vp.editing .ltools {
     left: auto;
-    right: max(12px, env(safe-area-inset-right, 0px));
+    right: max(var(--ledge), env(safe-area-inset-right, 0px));
     grid-auto-flow: column;
   }
-  .etools {
-    gap: 2px;
-    padding: 3px;
+  /* a phone on its side: smaller cells – the same in every column (tools, choices, Ångra), so their rows are level
+     (V1.8.21, the user: before, the tools had 40 px cells with 2 px between them, the boxes 44 px with 4) */
+  .ecol {
+    --ecell: 40px;
   }
 }
 /* the ends of the chosen drawn thing: drag one to make it longer or shorter */
-.edits .ehandle {
+.edits .ehandle,
+.syms .ehandle {
   fill: #fff;
   stroke: var(--tag);
   stroke-width: 2.5px;
@@ -3535,7 +3650,7 @@ input.pinin.pwin {
    drawing tools; a little more room between the list and the three */
 .ltools {
   position: absolute;
-  left: max(12px, env(safe-area-inset-left, 0px));
+  left: max(var(--ledge), env(safe-area-inset-left, 0px));
   bottom: 12px;
   display: grid;
   gap: 10px;
@@ -3610,19 +3725,13 @@ input.pinin.pwin {
 @media (max-height: 520px) {
   .etools {
     top: 6px;
-    gap: 2px;
-    padding: 3px;
-  }
-  .etool {
-    width: 40px;
-    height: 40px;
   }
   .eopts {
     top: 6px;
-    padding: 6px;
     left: calc(max(6px, env(safe-area-inset-left, 0px)) + 56px);
   }
-  .eopts span {
+  /* the words beside the symbols go; the faces of Klass, Tid and a door's lists are what the cell shows, and stay */
+  .eopts span:not(.firepickface):not(.doorface):not(.zoneface):not(.zoneswatch) {
     display: none;
   }
 }
@@ -3708,11 +3817,53 @@ input.pinin.pwin {
   text-anchor: middle;
   dominant-baseline: central;
 }
-.edits .chaindot {
-  fill: rgba(255, 138, 0, 0.35);
-  stroke: #e65100;
-  stroke-width: 2px;
+/* where a line starts or goes on: a full dot with a white edge, clear against any drawing (V1.8.31: it was pale) */
+.chaindot {
+  fill: #e65100;
+  stroke: #fff;
+  stroke-width: 2.5px;
   vector-effect: non-scaling-stroke;
+}
+/* a point fixed (pinPulse): three rings spreading from it like rings on water, out to 180 px across (wider than a
+   thumb); without Mjuka övergångar they stand a moment, one inside the other */
+.pinpulse {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.pinpulse span {
+  position: absolute;
+  left: -90px;
+  top: -90px;
+  width: 180px;
+  height: 180px;
+  border: 3px solid #e65100;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.85),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transform: scale(0.1);
+  animation: pinpulse 0.9s ease-out forwards;
+}
+@keyframes pinpulse {
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+.noanim .pinpulse span {
+  animation: none;
+  opacity: 0.9;
+  transform: scale(var(--k));
 }
 .field .row select {
   flex: 1;
@@ -3858,10 +4009,16 @@ select {
   color: var(--ink);
   border: 1px solid var(--line);
   border-radius: var(--r);
-  padding: 20px 18px 18px;
+  padding: 20px 18px 0; /* the space under the buttons is theirs (.askbtns), so it follows them when they stay in place */
   display: grid;
   gap: 10px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  /* V1.8.44: on a low screen (the phone on its side) with large text and a long name the question was higher than
+     the screen, with its buttons partly outside – now its text is scrolled and the buttons stay in place at its
+     bottom (found by Layoutkontrollen) */
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .askbox h3 {
   margin: 0;
@@ -3874,12 +4031,16 @@ select {
   color: var(--muted);
   font-size: var(--fs-m);
   line-height: var(--lh);
+  overflow-wrap: anywhere; /* V1.8.44: a drawing's name in one long word made the question wider than the screen */
 }
 .askbtns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 6px;
+  padding: 6px 0 18px;
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
 }
 .askbtns.stack {
   grid-template-columns: 1fr;
@@ -3948,6 +4109,21 @@ a.btn {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 2px 8px;
+}
+/* The start page's heading row: "N uppdrag" and the search's magnifier at the right (V1.8.5); under it the search
+   field and the sorting in one place (.fswap), and the line with how many the search shows */
+.listhead .lhrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 1 1 100%;
+}
+.listhead .fswap {
+  flex: 1 1 100%;
+}
+.listhead .ffoot {
+  flex: 1 1 100%;
 }
 /* The sorting choices on the start page: the whole width, shared equally */
 .listhead .sortseg {
@@ -4061,12 +4237,6 @@ a.btn {
 }
 
 /* ---------- Symbolverktyget ---------- */
-.ltools .isotxt {
-  font-weight: 800;
-  font-size: var(--fs-b);
-  letter-spacing: 0.06em;
-  font-family: var(--font-ui);
-}
 /* the signs in the column, in their own colours (flat, not 3D) */
 .symico {
   width: calc(var(--ecell, 44px) * 0.7);
@@ -4082,7 +4252,7 @@ a.btn {
   height: calc(var(--ecell, 44px) * 0.296);
 }
 /* too little room for four signs: slightly smaller cells in the column */
-.etools.symcol.tight {
+.ecol.tight {
   --ecell: clamp(34px, 8.5vmin, 46px);
 }
 /* the column of signs scrolls with a finger when they do not all fit (fitSymPage sets its height) */
@@ -4091,6 +4261,14 @@ a.btn {
   overscroll-behavior: contain;
   scrollbar-width: none;
   touch-action: pan-y;
+  /* it comes to rest with whole signs scrolled away, so its rows stay level with the box's beside it (V1.8.21, the
+     user; fitSymPage) */
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: var(--egap);
+}
+.etools.symcol > .etool,
+.firepop > .eopt {
+  scroll-snap-align: start;
 }
 .etools.symcol::-webkit-scrollbar {
   display: none;
@@ -4105,6 +4283,12 @@ a.btn {
   stroke: var(--tag);
   stroke-width: 2.5px;
   stroke-dasharray: 5 3;
+  vector-effect: non-scaling-stroke;
+}
+/* the stalk from a chosen sign's frame to its round turning handle (V1.8.3) */
+.syms .symstalk {
+  stroke: var(--tag);
+  stroke-width: 2px;
   vector-effect: non-scaling-stroke;
 }
 .paperpick {
@@ -4271,7 +4455,7 @@ a.btn {
    the buttons stand beside the list */
 :root[data-hand="right"] .ecol {
   left: auto;
-  right: max(8px, env(safe-area-inset-right, 0px));
+  right: max(var(--eedge), env(safe-area-inset-right, 0px));
   align-items: flex-end;
 }
 :root[data-hand="right"] .ecol.beside {
@@ -4279,10 +4463,10 @@ a.btn {
 }
 :root[data-hand="right"] .ltools {
   left: auto;
-  right: max(12px, env(safe-area-inset-right, 0px));
+  right: max(var(--ledge), env(safe-area-inset-right, 0px));
 }
 :root[data-hand="right"] .editbar .mres {
-  left: max(8px, env(safe-area-inset-left, 0px));
+  left: max(var(--eedge), env(safe-area-inset-left, 0px));
 }
 @media (max-height: 520px) {
   :root[data-hand="right"] .ecol {
@@ -4293,7 +4477,7 @@ a.btn {
   }
   :root[data-hand="right"] .vp.editing .ltools {
     right: auto;
-    left: max(12px, env(safe-area-inset-left, 0px));
+    left: max(var(--ledge), env(safe-area-inset-left, 0px));
   }
   :root[data-hand="right"] .editbar .mres {
     left: 50%;
@@ -4423,6 +4607,27 @@ a.btn {
 }
 .proposal .pbtns .btn {
   flex: 1;
+}
+/* a possible duplicate (V1.8.8): the two objects side by side, each with its own Radera under it */
+.proposal .duppair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.proposal .dupone {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-size: var(--fs-s);
+  line-height: var(--lh);
+}
+.proposal .dupone p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.proposal .dupone .btn {
+  margin-top: auto; /* both Radera on the same line, however long the texts above */
 }
 
 /* The QR viewfinder (45-qr-skanner): the camera's picture over the whole screen, always dark like the photo editor.
@@ -4601,6 +4806,87 @@ a.btn {
 }
 :root[data-theme="dark"] .acsw {
   background: var(--sw-d);
+}
+
+/* Mät: the cross through the end of the line being drawn, to the edges of the drawing area (V1.8.28); under the tool
+   columns, which come after it */
+.vp > svg.mcross {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.mcross .mcross-halo {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 3.5px;
+  stroke-dasharray: 6 4;
+}
+.mcross .mcross-line {
+  stroke: #e65100;
+  stroke-width: 1.5px;
+  stroke-dasharray: 6 4;
+}
+
+/* V1.8.34 Områden (53): laid on like a highlighter – multiplied with the drawing, so its black stays black */
+.edits path.zone {
+  mix-blend-mode: multiply;
+}
+/* V1.8.38: a striped area is a group clipped to its outline – a clipped group is drawn on its own, so its paths would
+   only multiply with each other: the group as a whole is multiplied with the drawing instead */
+.edits .zonehatch {
+  mix-blend-mode: multiply;
+}
+.edits .zonehatch path.zone {
+  mix-blend-mode: normal;
+}
+/* V1.8.46: Ej inventerat is not a highlighter – its red lines lie over the drawing as they are */
+.edits .zonehatch.bare {
+  mix-blend-mode: normal;
+}
+.edits .zoneline {
+  stroke: #37474f;
+  stroke-dasharray: 6 4;
+  vector-effect: non-scaling-stroke;
+}
+.edits .zoneclose {
+  fill: none;
+  stroke: var(--tag);
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+.edits .zoneclose.on {
+  fill: rgba(230, 81, 0, 0.25);
+}
+/* the area's tool in the column: the L in the type's colour */
+.zoneico path {
+  fill: var(--zone);
+  fill-opacity: 1;
+}
+/* the symbol tool's two groups, in a row beside its button */
+.ltools.symgrp {
+  grid-auto-flow: column;
+}
+:root[data-hand="right"] .ltools.symgrp {
+  direction: rtl;
+}
+/* an area's type: a swatch in its colour over its name */
+.zoneface {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  line-height: 1;
+  pointer-events: none;
+}
+.zoneface b {
+  font-size: calc(var(--ecell, 44px) * 0.2);
+}
+.zoneswatch {
+  display: block;
+  width: calc(var(--ecell, 44px) * 0.56);
+  height: calc(var(--ecell, 44px) * 0.24);
+  border: 1px solid #8a8a8a;
+  border-radius: 2px;
 }
 </style>
 

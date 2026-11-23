@@ -1,7 +1,9 @@
 // Adjusts the Android project that "npx cap add android" creates:
 // - no internet permission: the app can never send or fetch anything
-// - the permissions the app does use: the camera (asked the first time you take a photo) and, on Android 10 and
-//   older only, saving in the shared folders Dokument and Bilder (newer Android needs no permission for that)
+// - the permissions the app does use: the camera (asked the first time you take a photo), vibrating (V1.8.44: without
+//   it Android's WebView never vibrates – the short buzz when a point is fixed or an object is lifted; given at
+//   installation, never asked for) and, on Android 10 and older only, saving in the shared folders Dokument and
+//   Bilder (newer Android needs no permission for that)
 // - no Android cloud backup of the app's data (nothing leaves the phone)
 // - what the phone may hand the app from outside: the invitation link in Samarbeta's QR code (planpin://samarbeta/…),
 //   and a file opened in the file manager or sent with Dela → PlanPin. Android does not know the kind .planpin, so
@@ -16,6 +18,7 @@ let m = fs.readFileSync(man, "utf8");
 m = m.replace(/\s*<uses-permission android:name="android\.permission\.INTERNET"\s*\/>/g, "");
 const perms = [
   '<uses-permission android:name="android.permission.CAMERA" />',
+  '<uses-permission android:name="android.permission.VIBRATE" />',
   '<uses-feature android:name="android.hardware.camera" android:required="false" />',
   '<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />',
   '<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />',
@@ -72,4 +75,4 @@ for (const [d, px] of Object.entries(sizes)) {
   for (const f of ["ic_launcher.png", "ic_launcher_round.png", "ic_launcher_foreground.png"]) fs.copyFileSync("icons/icon-" + px + ".png", path.join(dir, f));
 }
 fs.rmSync(path.join(A, "src/main/res/mipmap-anydpi-v26"), { recursive: true, force: true }); // use the PNG icons above
-console.log("Android project adjusted: version", ver, "build", code, "| API 36 | camera + storage (Android ≤10) | no internet | no cloud backup | opens planpin:// links and its files");
+console.log("Android project adjusted: version", ver, "build", code, "| API 36 | camera + vibrate + storage (Android ≤10) | no internet | no cloud backup | opens planpin:// links and its files");

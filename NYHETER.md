@@ -10,6 +10,36 @@ Inget än.
 
 ---
 
+## V1.9.5 (2026-11-23)
+
+En snabb uppdatering. Installera som vanligt, allt ligger kvar.
+
+**Nytt**
+- **Gör en checkpunkt direkt på ritningen.** När du håller på ritningen för ett nytt objekt finns valet **Objekt | Checkpunkt** överst i rutan. Väljer du Checkpunkt skriver du bara vad du ska titta på (tangentbordet kommer när du trycker i fältet) och trycker **Spara checkpunkt** – den hamnar i checklistan och där du höll på ritningen. Ingen omväg via Uppdragsinställningar → Checklista.
+
+**Fixat**
+- **Tangentbordet täckte fältet du skrev i.** När tangentbordet kom upp i en ruta låg Spara och Avbryt kvar längst ner och täckte nedre delen av fältet och raden under det, så att fältet såg ihoptryckt ut. Nu flyttas rutan så att fältet och raden under står ovanför knapparna, och knapparna tar mindre plats medan tangentbordet är uppe. Det gäller alla rutor med textfält: objektets beskrivning, checkpunkten, Uppdragsinformation, checklistan, grupper, kategorier, snabbtexter, ritningens namn, Skala, Håll still, kodlåset, Samarbeta och nytt uppdrag.
+
+---
+
+## V1.9.2 (2026-11-23)
+
+En snabb uppdatering efter självtest på två telefoner. Installera som vanligt, allt ligger kvar.
+
+**Snabbare**
+- **PDF-ritningar läses in mycket fortare.** Att packa varje sida tog 4–5 sekunder på båda telefonerna, fast telefonen knappt arbetade – bilden hämtades tillbaka från grafikkretsen först. Nu hålls sidan i processorns minne från början; samma sida packades då på under 0,2 sekunder i testet.
+- **Foton görs mindre på det sätt som är snabbast på just din telefon.** Android-appen har två sätt. Den tar tid på båda med de foton du faktiskt tar och använder det snabbare, och prövar det andra igen då och då. Webbläsardelens sätt packar dessutom fotot ur processorns minne, som PDF-sidorna. Diagnosverktyg visar tiderna för båda.
+- **Säkerhetskopior och Samarbeta-filer läses in fortare.** Varje foto lästes förut i full storlek bara för att kontrollera att det är en riktig bild. Nu läses det i en åttondels storlek, vilket säger samma sak. På den äldre telefonen var det nästan hela tiden för inläsningen.
+- **Självtestet går fortare:** testfotona görs i processorns minne (de tog 7–10 sekunder styck).
+
+**Ändrat**
+- **Färgtema** heter sidan med appens färger igen (Inställningar → Utseende och layout), som raden till den.
+
+**Fixat**
+- **Ord som bröts mitt i.** På en smal telefon med stor text stod det "Proto-koll" och "Redigerbar-t" på exportknapparna och "Uppdragsinformatio-n" i Uppdragsinställningar. Nu hamnar en exportknapp som inte får plats på raden under, och Uppdragsinformation bryts som "Uppdrags-information" när det måste.
+
+---
+
 ## V1.9 (2026-11-22)
 
 Samlar ändringarna från V1.8.1–V1.8.46.

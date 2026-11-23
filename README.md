@@ -80,7 +80,7 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 
 **Övrigt**
 - I en klunga av objekt behåller ungefär varannan markör sitt nummer och resten visas som små prickar i gruppens färg, så att ritningen syns även med många objekt. Prickarna följer med när du zoomar och får tillbaka numret när det finns plats (kan stängas av).
-- Ljust och mörkt läge, och sex accentfärger att välja mellan under Inställningar → Utseende och layout → Accentfärg (ritningen och protokollet påverkas inte). Knappar och symboler anpassar sig efter skärmens storlek. Ritverktygen och objektlistan sitter som runda knappar nertill där tummen når dem, till vänster eller höger efter vilken hand du håller telefonen i (Inställningar → Utseende och layout → Föredragen marginal), och inställningarna för uppdraget och ritningen står i namnraden. Animeringarna kan stängas av.
+- Ljust och mörkt läge, och sex färgteman att välja mellan under Inställningar → Utseende och layout → Färgtema (ritningen och protokollet påverkas inte). Knappar och symboler anpassar sig efter skärmens storlek. Ritverktygen och objektlistan sitter som runda knappar nertill där tummen når dem, till vänster eller höger efter vilken hand du håller telefonen i (Inställningar → Utseende och layout → Föredragen marginal), och inställningarna för uppdraget och ritningen står i namnraden. Animeringarna kan stängas av.
 - Fungerar utan uppkoppling när den väl är öppnad. Vid en uppdatering följer uppdragen med, och säkerhetskopior från de två senaste versionerna går alltid att läsa in.
 
 Vad som är nytt i varje version står i [NYHETER.md](NYHETER.md).

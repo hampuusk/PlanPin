@@ -1145,6 +1145,18 @@ html {
   color: #fff;
   border-style: solid;
 }
+/* V1.9.3: Objekt | Checkpunkt in a new object's sheet – the two share the row half and half (the user) */
+.sortseg.half {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.sortseg.half .seg {
+  white-space: normal;
+}
+.bigtag.chkbadge {
+  background: var(--chk);
+  color: #fff;
+}
 .chkbanner {
   display: grid;
   gap: 2px;
@@ -2328,6 +2340,18 @@ body.typing .side .pickbar {
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
+/* V1.9.2: the export buttons' words are never broken inside the word (Proto-koll, Redigerbar-t on a narrow phone
+   with large text) – the three are as wide as each other while there is room, and one that does not fit goes to
+   the next row, as Självtest's levels */
+.exgrid.savebar {
+  display: flex;
+  flex-wrap: wrap;
+}
+.exgrid.savebar .btn {
+  flex: 1 1 0;
+  min-width: min-content;
+  overflow-wrap: normal;
+}
 .exgrid .btn {
   padding: 14px 8px;
   flex-direction: column;
@@ -2863,6 +2887,14 @@ img.tload,
   background: var(--surface);
   padding-block: 10px;
   box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.25);
+}
+/* V1.9.5: with the keyboard up (body.kbd, 17) the buttons take less of the little height left */
+body.kbd .savebar {
+  padding-block: 6px;
+}
+body.kbd .savebar .btn {
+  min-height: 44px;
+  padding-block: 8px;
 }
 /* Floors without a drawing: the objects as a list */
 .choice {
@@ -4755,7 +4787,7 @@ a.btn {
   }
 }
 
-/* Utseende → Accentfärg: the button and the page with the colours */
+/* Utseende → Färgtema: the button and the page with the colours */
 .accentbtn {
   display: flex;
   flex-wrap: wrap; /* big text on a narrow phone: the chosen colour goes to a row of its own, at the right… */
@@ -4765,7 +4797,7 @@ a.btn {
 }
 .accentbtn .grow {
   flex: 1 1 auto;
-  overflow-wrap: normal; /* …instead of the word Accentfärg breaking in two */
+  overflow-wrap: normal; /* …instead of the word Färgtema breaking in two */
 }
 .accentbtn .acval {
   display: inline-flex;

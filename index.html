@@ -4640,6 +4640,50 @@ a.btn {
 .proposal .pbtns .btn {
   flex: 1;
 }
+/* a proposal for a marking or a checkpoint (V1.9.10): the piece of the drawing before and after */
+.proposal .pminis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.proposal .pmini {
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.proposal .pmini figcaption {
+  font-size: var(--fs-s);
+  color: var(--muted);
+}
+.proposal .pminibox {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+.proposal .pminisheet {
+  position: absolute;
+  pointer-events: none;
+}
+.proposal .pminisheet img,
+.proposal .pminisheet svg.edits {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.proposal .pminimark {
+  fill: none;
+  stroke: #ff8a00;
+}
+.proposal .pminichk {
+  fill: rgba(255, 255, 255, 0.85);
+  stroke: #1565c0;
+}
 /* a possible duplicate (V1.8.8): the two objects side by side, each with its own Radera under it */
 .proposal .duppair {
   display: grid;

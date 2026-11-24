@@ -10,6 +10,37 @@ Inget än.
 
 ---
 
+## V1.9.10 (2026-11-24)
+
+**Samarbeta: allt medhjälparen gör följer med (V1.9.10)**
+- **Ritverktygen följer med till ägaren.** Väggar, dörrar, fönster, sudd, symboler, anteckningar, mätningar, brandcellsgränser och områden som medhjälparen ritar läggs in hos ägaren när filen läses in. Förut stannade de på medhjälparens telefon.
+- **Checkpunkter också.** Medhjälparen kan nu skapa checkpunkter, och de följer med till ägaren. Har medhjälparen gjort checkpunkten till ett objekt kommer bara objektet.
+- **Ägarens markeringar skyddas som ägarens objekt.** Flyttar, ändrar eller raderar medhjälparen något som ägaren ritat, eller en av ägarens checkpunkter, blir det ett förslag. Granskningen visar ritningsbiten före och efter, med Godkänn och Avvisa. Att bocka av en checkpunkt går in direkt.
+- **Knappen Skicka räknar allt.** "Skicka 5 ändringar" räknar nu även markeringar och checkpunkter, och beskedet när en fil läses in säger hur många markeringar och checkpunkter som kom.
+- **"Skicka allt mitt igen"** (hette "Skicka alla mina objekt igen") skickar även markeringar och checkpunkter på nytt.
+- **Självtestet provar det.** Ett nytt steg gör en av varje markering och en checkpunkt som medhjälpare, skickar filen och läser in den som ägaren: allt ska komma fram, ändringen i ägarens markering ska bli ett förslag och avbockningen gå rakt in.
+- **Delades uppdraget med en äldre version?** Läs in en ny fil från ägaren en gång, så följer även checkpunkterna och det medhjälparen ritat tidigare med. Medhjälparens sida under Samarbeta säger till så länge det behövs. Båda telefonerna behöver den nya versionen.
+
+**Markeringar håller formen när de flyttas i Bluebeam (V1.9.9)**
+- **Skrafferade ytor behåller skrafferingen.** Förut blev "Utrymningsväg med nödbelysning" enfärgad och "Ej inventerat" osynlig när ytan flyttades i Bluebeam. Ytorna bär nu skrafferingen på Bluebeams eget sätt.
+- **Textrutor ser likadana ut efter en flytt.** Förut hamnade texterna i informationsrutan snett under sina symboler, mätningens och anteckningens text bröts på två rader och anteckningens kant blev svart. Textrutorna görs nu efter Bluebeams egna regler redan i exporten. Anteckningens och mätningens rutor är därför något rymligare än förut.
+- **Anteckningen flyttas hel.** Pilen har nu spets, knä och fäste mitt på rutans sida, som Bluebeams egna pratbubblor – förut följde bara pilen med när man drog i anteckningen. Pilen har därför en kort rak bit närmast rutan.
+- **Anteckningens pilhuvud** ritas som Bluebeams eget: gult med blå kontur. Förut var det helblått och bytte utseende vid en flytt.
+- **Prickarna behåller sin storlek.** Mätningens punkter och prickarna på hänvisningslinjer (fönsterklass, skyltar, objektnummer) är nu egna cirklar i samma grupp som linjen. Förut blev de dubbelt så stora när linjen flyttades. De följer med när gruppen flyttas, men inte när man drar i en enskild punkt på linjen.
+- **Brandcellsgränserna ser likadana ut överallt.** De långa strecken har nu raka ändar och prickarna är runda – så som Bluebeam ritar linjen när den flyttas. Det gäller på ritningen i appen, i översiktsbilderna, i PDF:en och i symbolförteckningen. Förut hade strecken rundade ändar och bytte utseende vid en flytt i Bluebeam.
+
+**Uppdragstypen heter Platsbesök (V1.9.8)**
+- "Inventering/platsbesök" heter nu **Platsbesök** överallt: i valet av uppdragstyp, på startsidan och i dess filter, i uppdragsrutan, i rapportens titel och i mejlets ämne. Knappen heter "Nytt platsbesök". Uppdrag du redan har byter namn av sig själva; inget annat ändras.
+
+**Säkerhetskopior och Samarbeta-filer läses in fortare (V1.9.7)**
+- Bilderna i en fil kontrollerades och sparades en i taget: 600 foton tog 23 sekunder på en äldre telefon. Nu läses upp till fyra bilder samtidigt. Kontrollen av varje bild är densamma som förut, och fotona hamnar i samma ordning.
+
+**Självtestet (V1.9.7)**
+- Jämförelsen mellan sätten att packa en bild räknas inte längre in i stegets tid, och webbläsarens eget sätt får högst 2 sekunder (det tog 13 sekunder per gång på en äldre telefon, och då såg steget långsamt ut fast appen inte var det).
+- Raderna om säkerhetskopia och Samarbeta visar tiden per bild, uppdelad på att kontrollera och att spara.
+
+---
+
 ## V1.9.6 (2026-11-24)
 
 En snabb uppdatering. Installera som vanligt, allt ligger kvar.

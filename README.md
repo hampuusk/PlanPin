@@ -14,7 +14,7 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 ## Funktioner
 
 **Uppdrag och ritningar**
-- Två typer av uppdrag: **Inventering/platsbesök** (med prioritering) och **Utförandekontroll** (objekttyper med kontrollpunkter enligt BFS 2024:7). Båda kan påbörjas utan underlag och få ett underlag senare.
+- Två typer av uppdrag: **Platsbesök** (med prioritering) och **Utförandekontroll** (objekttyper med kontrollpunkter enligt BFS 2024:7). Båda kan påbörjas utan underlag och få ett underlag senare.
 - Ritningar med en PDF eller en bild som underlag. En PDF med flera sidor kan läggas in som en ritning per sida.
 - Flera ritningar i samma uppdrag, med flikar som visar antalet objekt på varje ritning.
 - Sortering av uppdragen efter senast använda, datum, namn eller typ.
@@ -63,9 +63,11 @@ PlanPin är gjord för besiktningar, inventeringar och kontroller på plats. Du 
 **Samarbeta – två i samma uppdrag, utan server**
 - Under Uppdragsinställningar → Samarbeta bjuder du in en medhjälpare. Du som bjuder in är ägare och bestämmer numreringen. Medhjälparen får hela uppdraget som en fil och läser in den med en kod. Koden skannas från din skärm – appen visar kameran som en sökare och läser QR-koden så fort den syns – eller skrivs in.
 - **I Android-appen** öppnas filen direkt: tryck på den i filhanteraren, eller välj Dela → PlanPin, så läses den in. Telefonens egen kamera kan också läsa QR-koden och öppna PlanPin med koden ifylld. Fil och kod kan komma i vilken ordning som helst.
-- Filerna går åt ett håll i taget: ägaren skickar hela uppdraget (ritningarna med sina underlag, inställningarna och alla objekt med de slutliga numren), medhjälparen skickar sina ändringar – med Quick Share, Bluetooth, mejl eller vad telefonen har i sin dela-meny. Medhjälparens fil innehåller bara det som ändrats sedan förra, med foton. Ett objekt som inte skickats än är märkt "Ej synkad" och ritas fyrkantigt på ritningen; knappen Skicka i ritningsvyn räknar dem.
+- Filerna går åt ett håll i taget: ägaren skickar hela uppdraget (ritningarna med sina underlag, inställningarna och alla objekt med de slutliga numren), medhjälparen skickar sina ändringar – med Quick Share, Bluetooth, mejl eller vad telefonen har i sin dela-meny. Medhjälparens fil innehåller bara det som ändrats sedan förra, med foton. Ett objekt som inte skickats än är märkt "Ej synkad" och ritas fyrkantigt på ritningen; knappen Skicka i ritningsvyn räknar allt som inte är skickat.
+- Allt medhjälparen gör följer med: objekt, det som görs med ritverktygen (väggar, dörrar, fönster, sudd, symboler, anteckningar, mätningar, brandcellsgränser och områden) och checkpunkter. En checkpunkt som medhjälparen gjort till ett objekt kommer som objektet.
 - När ägaren läser in medhjälparens nya objekt numreras de efter ägarens, i den ordning de gjordes, och ägarens nästa fil ger medhjälparen de slutliga numren. Det medhjälparen lagt till eller ändrat men inte hunnit skicka ligger kvar när ägarens fil läses in.
 - Ändrar medhjälparen ett av ägarens objekt blir det ett förslag hos ägaren: en streckad ring på ritningen, ett besked när filen läses in, och en granskning som visar vad som skiljer med Godkänn och Avvisa. Medhjälparen kan inte ta bort ägarens objekt eller ritningar; sina egna objekt tar medhjälparen bort som vanligt, och raderingen följer med.
+- Detsamma gäller ritningen och checklistan: ändrar eller raderar medhjälparen en markering eller checkpunkt som är ägarens blir det ett förslag, och granskningen visar ritningsbiten före och efter. Att bocka av en checkpunkt går in direkt. Det medhjälparen själv ritat ändrar och raderar medhjälparen fritt.
 - Filerna är krypterade med koden (AES-256) och avslöjar ingenting för den som får tag i dem utan koden. Ingenting går via nätet – appen skickar bara filen till dela-menyn.
 
 **Säkerhet och integritet**

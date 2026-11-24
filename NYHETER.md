@@ -10,6 +10,18 @@ Inget än.
 
 ---
 
+## V1.9.12 (2026-11-24)
+
+**Foton vars storlek står långt in i filen (V1.9.11)**
+- Står fotots storlek inte i filens första 256 kB läser appen nu vidare tills den hittas, så att fotot kan göras mindre på det snabba sättet i stället för att läsas helt.
+- **Prova med egna foton** säger nu varför när ett foto inte går att läsa (filens sort och felets text). Förut stod bara "gick inte att läsa". Ett foto utan storlek i början provas på appens vanliga sätt i stället för att räknas som oläsligt.
+
+**Självtestet i webbversionen inne i Claude (V1.9.12)**
+- Självtestet noterade "Tillståndet rättades: uppdraget finns inte" bland felen när testuppdraget togs bort, fast inget var fel. Testet lämnar nu uppdragets vy innan uppdraget tas bort.
+- Självtestets ruta med förloppet visas direkt när testet startas. Förut dröjde den knappt en halv sekund.
+
+---
+
 ## V1.9.10 (2026-11-24)
 
 **Samarbeta: allt medhjälparen gör följer med (V1.9.10)**

@@ -10,6 +10,22 @@ Inget än.
 
 ---
 
+## V1.9.6 (2026-11-24)
+
+En snabb uppdatering. Installera som vanligt, allt ligger kvar.
+
+**Snabbare inläsning av ritningar, foton och export på telefoner**
+- Självtesten från två telefoner visade att en PDF-sida tog 2–9 sekunder att packa som bild när den lästes in tillsammans med andra, men 0,2 sekunder ensam. Orsaken: webbläsarens eget sätt att packa en bild väntar på en ledig stund – och sådana kommer inte medan appen visar hur långt den har kommit. Bilder packas nu i en egen tråd som inte väntar på något och inte stör skärmen. Det gäller ritningssidor, foton, miniatyrer, redigerade foton och bilderna i en export.
+- Går tråden inte att använda på en telefon packas bilden ändå utan väntan (webbläsarens sätt får en kort stund, sedan packas bilden direkt). Filerna blir exakt desamma som förut.
+
+**Självtestet säger mer**
+- Rapporten börjar med telefonen: modell, Android-version, WebView-version, batterisparläge, batteri och laddare – så att två körningar går att jämföra.
+- Packningen mäts sida för sida, och samma sida och samma foto packas på appens tre sätt mitt under arbetet, så att rapporten visar vilket som är snabbast just på den telefonen.
+- Nytt: **Prova med egna foton**. Välj upp till 20 foton från telefonen; appen gör dem mindre på sina olika sätt och visar tiderna. Inget foto sparas och rapporten innehåller bara tider och storlekar.
+- Kopiera diagnos visar hur bilderna har packats sedan appen startades.
+
+---
+
 ## V1.9.5 (2026-11-23)
 
 En snabb uppdatering. Installera som vanligt, allt ligger kvar.

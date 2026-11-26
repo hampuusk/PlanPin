@@ -211,7 +211,6 @@ html {
 .cat,
 .seg,
 .floor,
-.sideclose,
 .flupe,
 .mrow,
 .choice,
@@ -228,7 +227,6 @@ html {
 .cat:active,
 .seg:active,
 .floor:active,
-.sideclose:active,
 .flupe:active {
   transform: scale(0.95);
 }
@@ -1689,17 +1687,7 @@ textarea {
   gap: 6px;
   margin-left: auto; /* to the right, also on a row of their own */
 }
-.sideclose {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink); /* it closes the list and deletes nothing: not red (V1.6.39) */
-  font-weight: 700;
-}
-/* the search's magnifier (V1.7.42): the same round button as ✕ beside it; while the search is open it is filled */
+/* the search's magnifier (V1.7.42): a round button in the heading, beside "+ Objekt"; while the search is open it is filled */
 .flupe {
   flex: none;
   display: grid;
@@ -2528,6 +2516,20 @@ body.typing .side .pickbar {
 .prio .muted {
   margin-left: 4px;
 }
+.uppill {
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: var(--fs-s);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
 input[type="date"] {
   width: 100%;
   font: inherit;
@@ -2946,6 +2948,23 @@ body.kbd .savebar .btn {
   min-width: 30px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+/* a general object (V1.9.16): "Generellt" where the number stands – the same in the list beside a drawing */
+.ocard .n.gen,
+.sitem .stop b.gen {
+  font-family: inherit;
+  font-size: var(--fs-s);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+/* "+ Objekt" in the object list beside a drawing: in the heading, where ✕ stood (V1.9.17) */
+.side .sideadd {
+  flex: none;
+  width: auto;
+  margin: 0;
+  min-height: 44px;
+  padding: 0 16px;
 }
 .ocard.nophoto {
   grid-template-columns: auto minmax(0, 1fr); /* no photo: no empty frame, the text takes the row (V1.6.39) */

@@ -4,9 +4,36 @@ Vad som är nytt eller ändrat i varje version som laddats upp till GitHub, nyas
 
 ---
 
-## V1.10 – kommande (ännu inte uppladdad)
+## V1.11 – kommande (ännu inte uppladdad)
 
 Inget än.
+
+---
+
+## V1.10 (2026-11-26)
+
+**"+ Objekt" i objektslistan och generella objekt (V1.9.16–V1.9.17)**
+- **"+ Objekt" i objektslistan.** Ett objekt kan läggas till utan att trycka på ritningen, även när ritningen har ett underlag. Knappen står i listans rubrik, där krysset stod förut. Listan stängs som tidigare med ett svep, ett tryck på ritningen eller telefonens bakåtknapp. På en ritning utan underlag heter knappen nu också "+ Objekt" (förut "+ Nytt objekt").
+- **Följer numreringen eller Generellt.** I objektets ruta väljer du om det ska följa numreringen (det får nästa nummer och kan placeras på ritningen i efterhand) eller vara generellt.
+- **Ett generellt objekt** har inget nummer och ingen markering på ritningen. Det står överst i objektslistan och överst i tabellen i PDF, Word och Excel, med "Generellt" i kolumnen för nummer.
+- **Valet går att ändra efteråt.** Ett numrerat objekt som görs generellt förlorar sin markering på ritningen, och objekten efter får nya nummer. Ett generellt som görs numrerat får sista numret och kan sedan placeras.
+- Generella objekt räknas inte som "saknar plats", och följer med i säkerhetskopian och i Samarbeta. Gör medhjälparen ett av ägarens objekt generellt blir det ett förslag hos ägaren.
+
+**Samarbeta: möjliga dubbletter (V1.9.14)**
+- När ägaren läser in medhjälparens fil letar appen efter sådant som båda kan ha lagt in: objekt nära ägarens objekt och symboler nära ägarens symboler av samma sort (inom 1 m, inställbart 0,1–10 m under Uppdragsinställningar → Samarbeta), och brandcellsgränser och områden som överlappar ägarens.
+- De visas i granskningen med ritningsbiten, och du bestämmer själv vad som ska vara kvar. Appen tar aldrig bort något på egen hand.
+
+**Anteckningar i Bluebeam (V1.9.15)**
+- En anteckning med hänvisningspil exporteras som en textruta och en pil i samma grupp, så de flyttas tillsammans i Bluebeam. Texten är svart även efter att anteckningen flyttats (förut blev den blå), och pilen pekar dit den ska.
+
+**Informationsrutan i det markerade ritningshuvudet (V1.9.18)**
+- När ritningshuvudet är markerat under Ritningsinställningar görs informationsrutan (uppgifterna och symbolförteckningen) så liten som krävs för att rymmas helt i det du markerat, med fler spalter när bredden räcker. Förut krympte den som mest till 65 % och kunde sedan sticka ut över ramen.
+
+**Android-appen (V1.9.13)**
+- Knappen Ladda ner för Android hämtar appen från repot med dess nya namn, PlanPin.
+
+**Självtestet**
+- Nya steg för Samarbeta (medhjälparens markeringar, checkpunkter och dubbletter) och för generella objekt.
 
 ---
 
